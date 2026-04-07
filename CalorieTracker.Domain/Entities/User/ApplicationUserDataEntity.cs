@@ -13,8 +13,8 @@ namespace CalorieTracker.Domain.Entities.User
         public short Height { get; set; }
         public short Weight { get; set; }
         public byte Age { get; set; }
-        public ApplicationUserEntity User { get; set; } = null!;
-        public ActivityLevelEntity ActivityLevel { get; set; } = null!;
-        public FitnessGoalEntity FitnessGoal { get; set; } = null!;
+        public ApplicationUserEntity? User { get; set; } 
+        public ActivityLevelEntity? ActivityLevel { get; set; }
+        public FitnessGoalEntity? FitnessGoal { get; set; }
     }
 }

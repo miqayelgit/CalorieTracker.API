@@ -6,6 +6,5 @@ namespace Domain.Entities.User
 {
     public class AplicationRoleEntity : IdentityRole<Guid>
     {
-        public RoleType RoleType { get; set; }
     }
 }

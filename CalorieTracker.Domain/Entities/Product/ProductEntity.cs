@@ -15,5 +15,5 @@ public class ProductEntity
     public float CarbsPerHundredGram { get; set; }
     public short CaloriesPerHundredGram { get; set; }
     public VisibilityScope VisibilityScope { get; set; }
-    public ApplicationUserEntity User { get; set; } = null!;
+    public ApplicationUserEntity? User { get; set; }
 }

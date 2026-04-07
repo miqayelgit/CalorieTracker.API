@@ -9,10 +9,6 @@ public class AplicationRoleEntityConfiguration : IEntityTypeConfiguration<Aplica
 {
     public void Configure(EntityTypeBuilder<AplicationRoleEntity> builder)
     {
-        builder.Property(x => x.RoleType)
-            .IsRequired();
 
-        builder.HasAlternateKey(x => x.RoleType)
-                .HasName("UQ_Users_RoleType");
     }
 }

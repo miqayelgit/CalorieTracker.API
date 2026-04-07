@@ -11,5 +11,5 @@ public class DailyNutrientsIntakeAmountEntity
     public short UsedLimit { get; set; }
     public short RemainingLimit { get; set; }
     public DateTime CreatedDate { get; set; }
-    public ApplicationUserEntity User { get; set; } = null!;
+    public ApplicationUserEntity? User { get; set; }
 }

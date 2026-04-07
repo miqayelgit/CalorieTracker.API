@@ -4,6 +4,6 @@ namespace CalorieTracker.Domain.Enums;
 
 public enum VisibilityScope
 {
-    Public,
-    Private
+    Public = 1,
+    Private = 2
 }

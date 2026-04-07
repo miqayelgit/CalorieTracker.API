@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Domain.Entities.User;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Context;
 
-public class DatabaseContext : IdentityDbContext
+public class DatabaseContext : IdentityDbContext<ApplicationUserEntity, AplicationRoleEntity, Guid>
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
