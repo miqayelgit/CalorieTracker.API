@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CalorieTracker.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Domain.Entities.User
 {
-    class AplicationRoleEntity : IdentityRole<Guid>
+    public class AplicationRoleEntity : IdentityRole<Guid>
     {
+        public RoleType RoleType { get; set; }
     }
 }
