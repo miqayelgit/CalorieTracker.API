@@ -1,0 +1,6 @@
+@CalorieTracker_ASP.NET__HostAddress = http://localhost:5038
+
+GET {{CalorieTracker_ASP.NET__HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
