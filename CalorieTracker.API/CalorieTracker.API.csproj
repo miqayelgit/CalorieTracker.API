@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>CalorieTracker_ASP.NET_</RootNamespace>
+    <RootNamespace>CalorieTracker.API</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\CalorieTracker..Infrastructure.csproj" />
+    <ProjectReference Include="..\CalorieTracker.Infrastructure\CalorieTracker.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

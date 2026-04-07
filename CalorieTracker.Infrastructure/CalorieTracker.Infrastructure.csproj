@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\CalorieTracker.Domain.csproj" />
+    <ProjectReference Include="..\CalorieTracker.Domain\CalorieTracker.Domain.csproj" />
   </ItemGroup>
 
 </Project>
