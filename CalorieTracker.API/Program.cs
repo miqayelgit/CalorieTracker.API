@@ -6,7 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
 
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Infrastructure")));
+builder.Services.AddDbContext<DatabaseContext>(
+    options => options
+    .UseSqlServer(connectionString, b => b.MigrationsAssembly("Infrastructure")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

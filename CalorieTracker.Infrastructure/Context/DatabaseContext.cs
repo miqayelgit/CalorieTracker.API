@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Infrastructure.Context;
 
-public class DatabaseContext : IdentityDbContext<ApplicationUserEntity, AplicationRoleEntity, Guid>
+public class DatabaseContext : IdentityDbContext<ApplicationUser, AplicationRole, Guid>
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
