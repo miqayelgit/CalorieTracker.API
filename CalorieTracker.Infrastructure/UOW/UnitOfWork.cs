@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.Application.Contracts.ActivityGoals;
 using CalorieTracker.Application.Contracts.DailyLimits;
 using CalorieTracker.Application.Contracts.Products;
+using CalorieTracker.Application.Contracts.UOW;
 using CalorieTracker.Application.Contracts.User;
 using CalorieTracker.Infrastructure.Repositories.ActivityGoals;
 using CalorieTracker.Infrastructure.Repositories.DailyLimits;
@@ -10,7 +11,7 @@ using Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.UOW;
 
-internal class UnitOfWork 
+internal class UnitOfWork : IUnitOfWork
 {
     private readonly DatabaseContext _context;
     public UnitOfWork(DatabaseContext context)
