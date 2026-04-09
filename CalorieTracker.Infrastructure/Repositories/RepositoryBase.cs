@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace CalorieTracker.Infrastructure.Repositories;
 
-public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
+internal abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
 {
     protected DatabaseContext Context;
     public RepositoryBase(DatabaseContext context)
