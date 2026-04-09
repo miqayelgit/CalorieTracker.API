@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CalorieTracker.Domain\CalorieTracker.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

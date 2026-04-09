@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Domain.Entities.Activity_Level;
+﻿using CalorieTracker.Domain.Entities.ActivityGoals;
 
 namespace CalorieTracker.Application.Contracts.ActivityGoals;
 public interface IActivityLevelRepository : IRepositoryBase<ActivityLevel>

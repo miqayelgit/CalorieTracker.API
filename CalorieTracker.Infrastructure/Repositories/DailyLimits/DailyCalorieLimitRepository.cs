@@ -1,5 +1,5 @@
-﻿using CalorieTracker.Application.Contracts;
-using CalorieTracker.Domain.Entities.DailyCalorieLimit;
+﻿using CalorieTracker.Application.Contracts.DailyLimits;
+using CalorieTracker.Domain.Entities.DailyLimits;
 using Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories.DailyLimits;

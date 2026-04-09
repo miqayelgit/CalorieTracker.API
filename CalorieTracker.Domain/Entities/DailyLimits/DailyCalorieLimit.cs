@@ -1,7 +1,7 @@
 ﻿
 using Domain.Entities.User;
 
-namespace CalorieTracker.Domain.Entities.DailyCalorieLimit;
+namespace CalorieTracker.Domain.Entities.DailyLimits;
 
 public class DailyCalorieLimit
 {

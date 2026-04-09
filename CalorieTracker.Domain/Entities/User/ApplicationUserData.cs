@@ -1,5 +1,5 @@
 ﻿
-using CalorieTracker.Domain.Entities.Activity_Level;
+using CalorieTracker.Domain.Entities.ActivityGoals;
 using CalorieTracker.Domain.Entities.ActivityGoals;
 using Domain.Entities.User;
 

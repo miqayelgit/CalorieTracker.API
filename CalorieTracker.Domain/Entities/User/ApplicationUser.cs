@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Domain.Entities.DailyCalorieLimit;
+﻿using CalorieTracker.Domain.Entities.DailyLimits;
 using CalorieTracker.Domain.Entities.DailyLimits;
 using CalorieTracker.Domain.Entities.Product;
 using CalorieTracker.Domain.Entities.User;

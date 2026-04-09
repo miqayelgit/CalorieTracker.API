@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Domain.Entities.DailyCalorieLimit;
+﻿using CalorieTracker.Domain.Entities.DailyLimits;
 
 namespace CalorieTracker.Application.Contracts.DailyLimits;
 public interface IDailyCalorieLimitRepository : IRepositoryBase<DailyCalorieLimit>

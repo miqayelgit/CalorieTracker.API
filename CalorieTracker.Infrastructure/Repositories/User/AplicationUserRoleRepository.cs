@@ -1,9 +1,8 @@
-﻿
-using CalorieTracker.Application.Contracts;
+﻿using CalorieTracker.Application.Contracts.User;
 using CalorieTracker.Domain.Entities.User;
 using Infrastructure.Context;
 
-namespace CalorieTracker.Infrastructure.Repositories;
+namespace CalorieTracker.Infrastructure.Repositories.User;
 
 public class AplicationUserRoleRepository : RepositoryBase<AplicationUserRole>, IAplicationUserRoleRepository
 {

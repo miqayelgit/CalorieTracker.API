@@ -1,5 +1,5 @@
 ﻿
-using CalorieTracker.Domain.Entities.DailyCalorieLimit;
+using CalorieTracker.Domain.Entities.DailyLimits;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Application.Contracts;
+﻿using CalorieTracker.Application.Contracts.DailyLimits;
 using CalorieTracker.Domain.Entities.DailyLimits;
 using Infrastructure.Context;
 

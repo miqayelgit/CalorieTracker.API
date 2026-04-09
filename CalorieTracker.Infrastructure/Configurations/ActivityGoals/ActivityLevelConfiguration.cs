@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Domain.Entities.Activity_Level;
+﻿using CalorieTracker.Domain.Entities.ActivityGoals;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
