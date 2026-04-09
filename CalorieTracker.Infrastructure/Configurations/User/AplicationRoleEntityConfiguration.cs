@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CalorieTracker.Infrastructure.Configurations.User;
 
-public class AplicationRoleEntityConfiguration : IEntityTypeConfiguration<AplicationRole>
+public class AplicationRoleEntityConfiguration : IEntityTypeConfiguration<ApplicationRole>
 {
-    public void Configure(EntityTypeBuilder<AplicationRole> builder)
+    public void Configure(EntityTypeBuilder<ApplicationRole> builder)
     {
         builder.HasKey(x => x.Id);
 

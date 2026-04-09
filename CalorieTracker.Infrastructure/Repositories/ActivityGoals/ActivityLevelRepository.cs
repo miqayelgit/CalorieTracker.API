@@ -1,5 +1,5 @@
 ﻿using CalorieTracker.Application.Contracts.ActivityGoals;
-using CalorieTracker.Domain.Entities.ActivityGoals;
+using CalorieTracker.Domain.Entities.ActivityLevel;
 using Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories.ActivityGoals;

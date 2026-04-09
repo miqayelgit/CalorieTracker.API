@@ -1,5 +1,5 @@
 ﻿
-using CalorieTracker.Domain.Entities.ActivityGoals;
+using CalorieTracker.Domain.Entities.ActivityLevel;
 using CalorieTracker.Domain.Entities.ActivityGoals;
 using Domain.Entities.User;
 
@@ -14,7 +14,7 @@ namespace CalorieTracker.Domain.Entities.User
         public short Weight { get; set; }
         public byte Age { get; set; }
         public ApplicationUser? User { get; set; } 
-        public ActivityLevel? ActivityLevel { get; set; }
+        public ActivityLevel.ActivityLevel? ActivityLevel { get; set; }
         public FitnessGoal? FitnessGoal { get; set; }
     }
 }
