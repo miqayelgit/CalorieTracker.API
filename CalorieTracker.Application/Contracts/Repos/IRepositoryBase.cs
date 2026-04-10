@@ -1,7 +1,7 @@
 ﻿
 using System.Linq.Expressions;
 
-namespace CalorieTracker.Application.Contracts;
+namespace CalorieTracker.Application.Contracts.Repos;
 
 public interface IRepositoryBase<TEntity> where TEntity : class
 {
@@ -10,5 +10,4 @@ public interface IRepositoryBase<TEntity> where TEntity : class
     public void Update(TEntity entity);
     public Task<List<TEntity>> GetFromWhereAsync(Expression<Func<TEntity, bool>>? expression = null);
     public Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>>? expression = null);
-    public Task<int> CommitAsync();
 }

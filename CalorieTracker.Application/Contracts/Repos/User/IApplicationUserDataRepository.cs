@@ -1,6 +1,6 @@
 ﻿using CalorieTracker.Domain.Entities.User;
 
-namespace CalorieTracker.Application.Contracts.User;
+namespace CalorieTracker.Application.Contracts.Repos.User;
 
 public interface IApplicationUserDataRepository : IRepositoryBase<ApplicationUserData>
 {

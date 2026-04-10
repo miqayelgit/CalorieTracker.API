@@ -1,8 +1,8 @@
-﻿using CalorieTracker.Application.Contracts.ActivityGoals;
-using CalorieTracker.Application.Contracts.DailyLimits;
-using CalorieTracker.Application.Contracts.Products;
-using CalorieTracker.Application.Contracts.UOW;
-using CalorieTracker.Application.Contracts.User;
+﻿using CalorieTracker.Application.Contracts.Repos.ActivityGoals;
+using CalorieTracker.Application.Contracts.Repos.DailyLimits;
+using CalorieTracker.Application.Contracts.Repos.Products;
+using CalorieTracker.Application.Contracts.Repos.UOW;
+using CalorieTracker.Application.Contracts.Repos.User;
 using CalorieTracker.Infrastructure.Repositories.ActivityGoals;
 using CalorieTracker.Infrastructure.Repositories.DailyLimits;
 using CalorieTracker.Infrastructure.Repositories.Products;
@@ -33,4 +33,8 @@ internal class UnitOfWork : IUnitOfWork
     public IFitnessGoalRepository FitnessGoalRepository => _fitnessGoalRepository ??= new FitnessGoalRepository(_context);
     public IApplicationUserDataRepository ApplicationUserDataRepository => _applicationUserDataRepository ??= new ApplicationUserDataRepository(_context);
 
+    public async Task<int> CommitAsync()
+    {
+        return await _context.SaveChangesAsync();
+    }
 }

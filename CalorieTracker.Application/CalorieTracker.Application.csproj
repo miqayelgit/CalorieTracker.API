@@ -10,4 +10,8 @@
     <ProjectReference Include="..\CalorieTracker.Domain\CalorieTracker.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\Services\" />
+  </ItemGroup>
+
 </Project>

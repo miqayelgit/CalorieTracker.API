@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Application.Contracts.Products;
+﻿using CalorieTracker.Application.Contracts.Repos.Products;
 using CalorieTracker.Domain.Entities.Product;
 using Infrastructure.Context;
 

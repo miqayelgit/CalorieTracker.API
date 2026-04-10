@@ -1,5 +1,4 @@
-﻿
-using CalorieTracker.Application.Contracts;
+﻿using CalorieTracker.Application.Contracts.Repos;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -47,11 +46,5 @@ internal abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where
         }
 
        return Context.Set<TEntity>().Where(expression).ToListAsync();
-    }
-
-
-    public Task<int> CommitAsync()
-    {
-        return Context.SaveChangesAsync();
     }
 }

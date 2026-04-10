@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Application.Contracts.ActivityGoals;
+﻿using CalorieTracker.Application.Contracts.Repos.ActivityGoals;
 using CalorieTracker.Domain.Entities.ActivityGoals;
 using Infrastructure.Context;
 

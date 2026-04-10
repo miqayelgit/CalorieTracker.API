@@ -1,10 +1,10 @@
-﻿using CalorieTracker.Application.Contracts.ActivityGoals;
+﻿using CalorieTracker.Application.Contracts.Repos.ActivityGoals;
 using CalorieTracker.Domain.Entities.ActivityLevel;
 using Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories.ActivityGoals;
 
-public class ActivityLevelRepository : RepositoryBase<ActivityLevel>, IActivityLevelRepository
+internal class ActivityLevelRepository : RepositoryBase<ActivityLevel>, IActivityLevelRepository
 
 {
     public ActivityLevelRepository(DatabaseContext context) : base(context)

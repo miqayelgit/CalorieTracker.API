@@ -1,4 +1,4 @@
-﻿using CalorieTracker.Application.Contracts.User;
+﻿using CalorieTracker.Application.Contracts.Repos.User;
 using Domain.Entities.User;
 using Infrastructure.Context;
 
