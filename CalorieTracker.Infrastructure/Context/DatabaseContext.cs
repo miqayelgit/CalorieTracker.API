@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Reflection;
+using CalorieTracker.Domain.Entities.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using CalorieTracker.Domain.Entities.User;
 
-namespace Infrastructure.Context;
+namespace CalorieTracker.Infrastructure.Context;
 
 public class DatabaseContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {

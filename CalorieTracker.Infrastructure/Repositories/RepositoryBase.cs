@@ -1,7 +1,7 @@
 ﻿using CalorieTracker.Application.Contracts.Repos;
-using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using CalorieTracker.Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories;
 

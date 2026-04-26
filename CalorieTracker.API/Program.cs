@@ -1,4 +1,4 @@
-using Infrastructure.Context;
+using CalorieTracker.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

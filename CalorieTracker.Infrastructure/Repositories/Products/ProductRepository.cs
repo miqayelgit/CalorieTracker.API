@@ -1,6 +1,6 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.Products;
 using CalorieTracker.Domain.Entities.Product;
-using Infrastructure.Context;
+using CalorieTracker.Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories.Products;
 
