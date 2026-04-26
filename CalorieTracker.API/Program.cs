@@ -8,7 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("ConnectionStri
 
 builder.Services.AddDbContext<DatabaseContext>(
     options => options
-    .UseSqlServer(connectionString, b => b.MigrationsAssembly("Infrastructure")));
+    .UseSqlServer(connectionString, b => b.MigrationsAssembly("CalorieTracker.Infrastructure")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
