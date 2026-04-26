@@ -17,6 +17,9 @@ internal class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
+    private IApplicationRoleRepository? _roleRepository;
+    public IApplicationRoleRepository RoleRepository => _roleRepository ??= new ApplicationRoleRepository(_context);
+
     public async Task<int> CommitAsync()
     {
         return await _context.SaveChangesAsync();

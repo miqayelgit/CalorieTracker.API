@@ -1,5 +1,6 @@
 ﻿namespace CalorieTracker.Application.Contracts.Services.User;
 
-public class IApplicationRoleService
+public interface IApplicationRoleService
 {
+    Task SeedAsync();
 }
