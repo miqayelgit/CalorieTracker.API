@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.UOW;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Domain.Entities.User;
+using CalorieTracker.Domain.Enums;
 
 namespace CalorieTracker.Application.Services.User;
 
@@ -16,7 +17,7 @@ public class ApplicationRoleService : IApplicationRoleService
     public async Task SeedAsync()
     {
         var roles = await _unitOfWork.RoleRepository.GetFromWhereAsync();
-        var newRoles = Roles
+        var newRoles = GetRoles()
             .Where(x => !roles.Any(r => r.Name!.Equals(x)))
             .ToList();
 
@@ -40,5 +41,11 @@ public class ApplicationRoleService : IApplicationRoleService
         await  _unitOfWork.CommitAsync();
     }
 
-    private static string[] Roles => ["User", "Admin"];
+    private static string[] GetRoles()
+    {
+        return Enum.GetValues(typeof(Role))
+            .Cast<Role>()
+            .Select(x => x.ToString())
+            .ToArray();
+    }
 }

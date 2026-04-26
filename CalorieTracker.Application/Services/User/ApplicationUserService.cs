@@ -1,5 +1,6 @@
 ﻿using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Domain.Entities.User;
+using CalorieTracker.Domain.Enums;
 using CalorieTracker.Dtos.Users;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,8 +17,6 @@ public class ApplicationUserService : IApplicationUserService
 
     public async Task RegisterAsync(RegistrationDto dto)
     {
-       // 1. Validate by email
-       
        var user = await _userManager.FindByNameAsync(dto.Email);
 
        if (user != null)
@@ -43,8 +42,12 @@ public class ApplicationUserService : IApplicationUserService
            throw new Exception($"Failed to create user : {string.Join(',', errors)}");
        }
 
-       _userManager.AddToRoleAsync(newUser, "");
+       var roleIdentityResult = await _userManager.AddToRoleAsync(newUser, nameof(Role.User));
 
-       // 2. 
+       if (!roleIdentityResult.Succeeded)
+       {
+           var errors = roleIdentityResult.Errors.Select(error => error.Description);
+           throw new Exception($"Failed to create user : {string.Join(',', errors)}");
+       }
     }
 }
