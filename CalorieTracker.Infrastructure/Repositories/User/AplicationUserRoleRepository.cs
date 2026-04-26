@@ -4,7 +4,7 @@ using Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories.User;
 
-internal class AplicationUserRoleRepository : RepositoryBase<AplicationUserRole>, IAplicationUserRoleRepository
+internal class AplicationUserRoleRepository : RepositoryBase<ApplicationUserRole>, IAplicationUserRoleRepository
 {
     public AplicationUserRoleRepository(DatabaseContext context) : base(context)
     {

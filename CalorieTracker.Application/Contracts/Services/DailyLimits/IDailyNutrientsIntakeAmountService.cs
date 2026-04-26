@@ -1,5 +1,5 @@
-﻿namespace CalorieTracker.Application.Contracts.Services.DailyLimits;
-
-public interface DailyNutrientsIntakeAmountService
-{
-}
+﻿// namespace CalorieTracker.Application.Contracts.Services.DailyLimits;
+//
+// public interface DailyNutrientsIntakeAmountService
+// {
+// }

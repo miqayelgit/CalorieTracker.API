@@ -1,10 +1,10 @@
-﻿using Domain.Entities.User;
+﻿using CalorieTracker.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CalorieTracker.Infrastructure.Configurations.User;
 
-public class AplicationRoleEntityConfiguration : IEntityTypeConfiguration<ApplicationRole>
+public class ApplicationRoleEntityConfiguration : IEntityTypeConfiguration<ApplicationRole>
 {
     public void Configure(EntityTypeBuilder<ApplicationRole> builder)
     {
@@ -12,6 +12,5 @@ public class AplicationRoleEntityConfiguration : IEntityTypeConfiguration<Applic
 
         builder.HasAlternateKey(x => x.Name)
             .HasName("UQ_AspNetRoles_Name");
-
     }
 }

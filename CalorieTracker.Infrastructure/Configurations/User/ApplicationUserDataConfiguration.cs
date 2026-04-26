@@ -1,6 +1,4 @@
-﻿
-
-using CalorieTracker.Domain.Entities.User;
+﻿using CalorieTracker.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

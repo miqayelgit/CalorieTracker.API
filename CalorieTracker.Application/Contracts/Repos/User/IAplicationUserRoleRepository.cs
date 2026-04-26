@@ -2,6 +2,6 @@
 
 namespace CalorieTracker.Application.Contracts.Repos.User;
 
-public interface IAplicationUserRoleRepository : IRepositoryBase<AplicationUserRole>
+public interface IAplicationUserRoleRepository : IRepositoryBase<ApplicationUserRole>
 {
 }

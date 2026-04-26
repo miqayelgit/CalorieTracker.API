@@ -1,7 +1,7 @@
 ﻿
 
+using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
-using Domain.Entities.User;
 
 namespace CalorieTracker.Domain.Entities.Product;
 

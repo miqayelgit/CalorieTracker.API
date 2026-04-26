@@ -1,7 +1,6 @@
 ﻿
 using CalorieTracker.Domain.Entities.ActivityLevel;
 using CalorieTracker.Domain.Entities.ActivityGoals;
-using Domain.Entities.User;
 
 namespace CalorieTracker.Domain.Entities.User
 {

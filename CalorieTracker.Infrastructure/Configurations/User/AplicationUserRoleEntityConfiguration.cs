@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CalorieTracker.Infrastructure.Configurations.User;
 
-public class AplicationUserRoleEntityConfiguration : IEntityTypeConfiguration<AplicationUserRole>
+public class AplicationUserRoleEntityConfiguration : IEntityTypeConfiguration<ApplicationUserRole>
 {
-    public void Configure(EntityTypeBuilder<AplicationUserRole> builder)
+    public void Configure(EntityTypeBuilder<ApplicationUserRole> builder)
     {
-
         builder.HasKey(ur => new { ur.UserId, ur.RoleId });
 
         builder.HasOne(x => x.User)

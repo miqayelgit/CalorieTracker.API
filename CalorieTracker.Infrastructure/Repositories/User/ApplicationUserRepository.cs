@@ -1,5 +1,5 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.User;
-using Domain.Entities.User;
+using CalorieTracker.Domain.Entities.User;
 using Infrastructure.Context;
 
 namespace CalorieTracker.Infrastructure.Repositories.User;

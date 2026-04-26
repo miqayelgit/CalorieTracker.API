@@ -1,4 +1,4 @@
-﻿using Domain.Entities.User;
+﻿using CalorieTracker.Domain.Entities.User;
 
 namespace CalorieTracker.Domain.Entities.DailyLimits;
 

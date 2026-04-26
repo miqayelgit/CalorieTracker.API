@@ -1,10 +1,8 @@
-﻿using CalorieTracker.Domain.Entities.User;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entities.User
+namespace CalorieTracker.Domain.Entities.User;
+
+public class ApplicationRole : IdentityRole<Guid>
 {
-    public class ApplicationRole : IdentityRole<Guid>
-    {
-        public ICollection<AplicationUserRole> UserRoles { get; set; } = [];
-    }
+    public ICollection<ApplicationUserRole> UserRoles { get; set; } = [];
 }
