@@ -29,7 +29,9 @@ public class ApplicationRoleService : IApplicationRoleService
         {
             var newRole = new ApplicationRole
             {
-                Name = roleName
+                Name = roleName,
+                NormalizedName = roleName.ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
             };
             
             _unitOfWork.RoleRepository.Add(newRole);
@@ -38,5 +40,5 @@ public class ApplicationRoleService : IApplicationRoleService
         await  _unitOfWork.CommitAsync();
     }
 
-    private static string[] Roles => ["User"];
+    private static string[] Roles => ["User", "Admin"];
 }
