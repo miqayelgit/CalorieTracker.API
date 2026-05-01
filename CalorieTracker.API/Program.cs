@@ -1,5 +1,6 @@
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
+using CalorieTracker.Application.Services.User;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
@@ -9,21 +10,27 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<DatabaseContext>(options => options
-    .UseSqlServer(connectionString, b => b.MigrationsAssembly("CalorieTracker.Infrastructure")));
+                .UseSqlServer(connectionString, b => b.MigrationsAssembly("CalorieTracker.Infrastructure")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-    .AddEntityFrameworkStores<DatabaseContext>();
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
 
 builder.Services
-    .AddInfrastructureServices()
-    .AddApplicationServices();
+               .AddInfrastructureServices()
+               .AddApplicationServices();
+
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+});
 
 var app = builder.Build();
 

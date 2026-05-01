@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Application.Contracts.Services.User;
+using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
 using CalorieTracker.Dtos.Users;
@@ -49,5 +50,23 @@ public class ApplicationUserService : IApplicationUserService
            var errors = roleIdentityResult.Errors.Select(error => error.Description);
            throw new Exception($"Failed to create user : {string.Join(',', errors)}");
        }
+    }
+
+    public async Task<GetApplicationUserDto> GetUserByUsername(string username)
+    {
+        var user =  await _userManager.FindByNameAsync(username);
+
+        if(user == null)
+        {
+            throw new NotFoundException("User not found!");
+        }
+
+        return new GetApplicationUserDto
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email
+        };
+
     }
 }

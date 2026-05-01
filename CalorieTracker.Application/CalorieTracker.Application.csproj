@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CalorieTracker.Domain\CalorieTracker.Domain.csproj" />
-    <ProjectReference Include="..\CalorieTracker.Dtos\CalorieTracker.Dtos.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Services\" />
+    <ProjectReference Include="..\CalorieTracker.Domain\CalorieTracker.Domain.csproj" />
+    <ProjectReference Include="..\CalorieTracker.Dtos\CalorieTracker.Dtos.csproj" />
   </ItemGroup>
 
 </Project>
