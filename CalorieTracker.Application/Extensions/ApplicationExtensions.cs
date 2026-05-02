@@ -1,5 +1,9 @@
+using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
+using CalorieTracker.Application.Options;
+using CalorieTracker.Application.Services.Security;
 using CalorieTracker.Application.Services.User;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CalorieTracker.Application.Extensions;
@@ -11,8 +15,15 @@ public static class ApplicationExtensions
         services.AddScoped<IApplicationRoleService, ApplicationRoleService>();
         services.AddScoped<IApplicationUserService, ApplicationUserService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         return services;
+    }
+
+    public static IServiceCollection AddApplicationOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JwtOptions>(_ => configuration.GetSection("JwtOptions"));
+        return services; 
     }
 }
 

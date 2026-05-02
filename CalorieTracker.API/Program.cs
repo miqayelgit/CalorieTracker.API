@@ -1,5 +1,6 @@
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
+using CalorieTracker.Application.Options;
 using CalorieTracker.Application.Services.User;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
@@ -22,6 +23,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
+
+// builder.Services.Configure<JwtOptions>(builder.x.GetSection("JwtOptions"));
 
 builder.Services
                .AddInfrastructureServices()

@@ -1,4 +1,5 @@
-﻿using CalorieTracker.Application.Contracts.Services.User;
+﻿using CalorieTracker.Application.Contracts.Services.Security;
+using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Dtos.Users;
@@ -11,13 +12,18 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IJwtTokenService _jwtTokenService;
 
-    public AuthenticationService(SignInManager<ApplicationUser> signInManager, 
-                                 UserManager<ApplicationUser> userManager)
+    public AuthenticationService(
+        SignInManager<ApplicationUser> signInManager, 
+        UserManager<ApplicationUser> userManager, 
+        IJwtTokenService jwtTokenService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _jwtTokenService = jwtTokenService;
     }
+    
     public async Task<GetApplicationUserDto> SignInUser(SignInDto dto)
     {
         var user = await _userManager.FindByNameAsync(dto.UserName);
@@ -27,13 +33,16 @@ public class AuthenticationService : IAuthenticationService
             throw new NotFoundException("User does not exist!"); 
         }
 
-        var result =  await _signInManager.PasswordSignInAsync(dto.UserName, dto.Password, false, false);
+        var result =  await _signInManager
+            .PasswordSignInAsync(dto.UserName, dto.Password, false, false);
 
         if (!result.Succeeded)
         {
             throw new InvalidInputException("Incorrect password!");
         }
 
+        var token =  _jwtTokenService.Generate(user);
+        
         return new GetApplicationUserDto
         {
             FirstName = user.FirstName,
