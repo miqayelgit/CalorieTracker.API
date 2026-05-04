@@ -1,3 +1,4 @@
+using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
@@ -8,6 +9,8 @@ using CalorieTracker.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +21,37 @@ builder.Services.AddDbContext<DatabaseContext>(options => options
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                 }
+            },
+            Array.Empty< string >()
+        }
+    });
+});
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
 
-// builder.Services.Configure<JwtOptions>(builder.x.GetSection("JwtOptions"));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
 builder.Services
                .AddInfrastructureServices()
@@ -34,6 +61,10 @@ builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
 });
+
+
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -49,10 +80,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<AuthMiddleware>();
 app.UseHttpsRedirection();
 
+//app.UseExceptionHandler();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

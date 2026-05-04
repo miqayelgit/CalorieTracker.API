@@ -24,7 +24,7 @@ public class AuthenticationService : IAuthenticationService
         _jwtTokenService = jwtTokenService;
     }
     
-    public async Task<GetApplicationUserDto> SignInUser(SignInDto dto)
+    public async Task<SignInResponseDto> SignInUser(SignInDto dto)
     {
         var user = await _userManager.FindByNameAsync(dto.UserName);
 
@@ -43,11 +43,9 @@ public class AuthenticationService : IAuthenticationService
 
         var token =  _jwtTokenService.Generate(user);
         
-        return new GetApplicationUserDto
+        return new SignInResponseDto
         {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email
+           Token = token
         };
     }
 
