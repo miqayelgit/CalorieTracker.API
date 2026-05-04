@@ -33,9 +33,6 @@ namespace CalorieTracker.API.Middlewares
 
             }
 
-            token = token.Substring("Bearer ".Length).Trim();
-
-
             var jwtToken = TokenHelper.ReadJwtToken(token);
 
             if (jwtToken == null)

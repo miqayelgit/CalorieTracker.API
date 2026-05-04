@@ -4,6 +4,8 @@ using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
 using CalorieTracker.Dtos.Users;
 using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CalorieTracker.Application.Services.User;
 
@@ -52,9 +54,15 @@ public class ApplicationUserService : IApplicationUserService
        }
     }
 
-    public async Task<GetApplicationUserDto> GetUserByUsername(string username)
+    public async Task<GetApplicationUserDto> GetUserByToken(JwtSecurityToken token)
     {
-        var user =  await _userManager.FindByNameAsync(username);
+        var nameClaim = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+
+        if (nameClaim == null)
+        {
+            throw new Exception("Claim is null");
+        }    
+        var user =  await _userManager.FindByNameAsync(nameClaim.Value);
 
         if(user == null)
         {
@@ -68,5 +76,28 @@ public class ApplicationUserService : IApplicationUserService
             Email = user.Email
         };
 
+    }
+
+    public async Task UpdateUser(UpdateUserDto dto, JwtSecurityToken token)
+    {
+        var nameClaim = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+
+        if (nameClaim == null)
+        {
+            throw new Exception("Claim is null");
+        }
+        var user = await _userManager.FindByNameAsync(nameClaim.Value);
+
+        if (user == null)
+        {
+            throw new NotFoundException("User not found!");
+        }
+
+        user.Email = dto.Email;
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
+
+        await _userManager.UpdateAsync(user);
+       
     }
 }

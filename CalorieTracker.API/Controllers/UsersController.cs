@@ -1,3 +1,4 @@
+using CalorieTracker.API.Helpers;
 using CalorieTracker.API.Mappers;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
@@ -20,23 +21,61 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterAsync([FromBody] RegistrationDto request)
     {
+        var token = Request.Headers.Authorization.FirstOrDefault();
+
+        if (string.IsNullOrEmpty(token))
+        {
+            return Unauthorized();
+        }
+
         await _applicationUserService.RegisterAsync(request);
         return Ok();
     }
 
-    [HttpGet]
-    [Route("get-by-username")]
-    public async Task<IActionResult> GetUserByUsername(string username)
+    [HttpGet("profile")]
+    public async Task<IActionResult> GetUserProfile()
     {
         try
         {
-            var user = await _applicationUserService.GetUserByUsername(username);
+            var token = Request.Headers.Authorization.FirstOrDefault();
+
+            if(string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Invalid token");
+            }
+            var jwtToken = TokenHelper.ReadJwtToken(token);
+
+            var user = await _applicationUserService.GetUserByToken(jwtToken);
             return Ok(user);
 
         }
         catch (CustomException ex)
         {
            return ExceptionMapper.MapException(ex, this);
+        }
+
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateUser(UpdateUserDto dto)
+    {
+        try
+        {
+            var token = Request.Headers.Authorization.FirstOrDefault();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("Invalid token");
+            }
+            var jwtToken = TokenHelper.ReadJwtToken(token);
+
+            await _applicationUserService.UpdateUser(dto, jwtToken);
+            return Ok();
+
+        }
+        catch (CustomException ex)
+        {
+            return ExceptionMapper.MapException(ex, this);
         }
 
     }

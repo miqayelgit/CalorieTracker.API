@@ -2,15 +2,12 @@ using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
-using CalorieTracker.Application.Services.User;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +39,7 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                  }
             },
-            Array.Empty< string >()
+            Array.Empty< string>()
         }
     });
 });
@@ -53,6 +50,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
+
 builder.Services
                .AddInfrastructureServices()
                .AddApplicationServices();
@@ -62,9 +60,6 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
 });
 
-
-
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -79,11 +74,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseRouting();
 app.UseMiddleware<AuthMiddleware>();
 app.UseHttpsRedirection();
 
-//app.UseExceptionHandler();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

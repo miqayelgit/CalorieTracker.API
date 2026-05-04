@@ -4,6 +4,7 @@ using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Dtos.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalorieTracker.API.Controllers;
 

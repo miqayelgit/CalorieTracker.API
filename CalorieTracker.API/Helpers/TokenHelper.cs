@@ -6,6 +6,9 @@ namespace CalorieTracker.API.Helpers
     {
         public static JwtSecurityToken ReadJwtToken(string token)
         {
+
+            token = token.Substring("Bearer ".Length).Trim();
+
             var tokenHandler = new JwtSecurityTokenHandler();
 
             if (!tokenHandler.CanReadToken(token))
