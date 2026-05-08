@@ -1,4 +1,5 @@
-﻿using CalorieTracker.API.Mappers;
+﻿using CalorieTracker.API.Attributes;
+using CalorieTracker.API.Mappers;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Dtos.Users;
@@ -18,6 +19,7 @@ public class AuthController : ControllerBase
     {
         _authenticationService = authenticationService;
     }
+
 
     [HttpPost]
     [Route("sign-in")]

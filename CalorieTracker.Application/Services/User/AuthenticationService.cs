@@ -50,15 +50,16 @@ public class AuthenticationService : IAuthenticationService
     }
 
     //return token in response + 
-    //What is middleware +
+    //What is middleware + read filter
     //create get profile endpoint. User should not send anything. Only for authorized users+
     //read what means useAutorization middleware+
     //add endpoints. Change user related data+
     //after this read how allow only authorized users to access endpoint+
-    //read about JWT - didn't but remember
+    //read about JWT - didn't but remember +
     //create project like this for Admin with different methods. Not methods +-
     //role based authorization -
     //add endpoint to add user data - 
+    //
 
 
     public async Task<string> ForgotPassword(ForgotPasswordDto dto)

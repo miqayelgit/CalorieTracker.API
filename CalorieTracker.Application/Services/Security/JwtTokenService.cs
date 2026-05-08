@@ -1,6 +1,7 @@
 using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Options;
 using CalorieTracker.Domain.Entities.User;
+using CalorieTracker.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -28,10 +29,13 @@ public class JwtTokenService : IJwtTokenService
             signingKey,
             SecurityAlgorithms.HmacSha256);
 
+        string userType = user.Email == "admin@gmail.com" ? Role.Admin.ToString() : Role.User.ToString();
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty)
+            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+            new Claim(ClaimTypes.Role, userType),
         };
 
         var expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationTimeInMinutes);

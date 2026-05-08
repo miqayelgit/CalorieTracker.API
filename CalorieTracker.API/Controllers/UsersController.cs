@@ -1,12 +1,17 @@
+using CalorieTracker.API.Attributes;
+using CalorieTracker.API.Filters;
 using CalorieTracker.API.Helpers;
 using CalorieTracker.API.Mappers;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Dtos.Users;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace CalorieTracker.API.Controllers;
 
+[CustomAuth]
+[ServiceFilter(typeof(AuthorizationFilter))]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
@@ -37,13 +42,13 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var token = Request.Headers.Authorization.FirstOrDefault();
+           
+            var jwtToken = TokenHelper.ReadJwtToken(HttpContext);
 
-            if(string.IsNullOrEmpty(token))
+            if (jwtToken == null)
             {
                 return BadRequest("Invalid token");
             }
-            var jwtToken = TokenHelper.ReadJwtToken(token);
 
             var user = await _applicationUserService.GetUserByToken(jwtToken);
             return Ok(user);
@@ -61,13 +66,12 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var token = Request.Headers.Authorization.FirstOrDefault();
+            var jwtToken = TokenHelper.ReadJwtToken(HttpContext);
 
-            if (string.IsNullOrEmpty(token))
+            if (jwtToken == null)
             {
-                return Unauthorized("Invalid token");
+                return BadRequest("Invalid token");
             }
-            var jwtToken = TokenHelper.ReadJwtToken(token);
 
             await _applicationUserService.UpdateUser(dto, jwtToken);
             return Ok();

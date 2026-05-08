@@ -1,3 +1,4 @@
+using CalorieTracker.API.Filters;
 using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
@@ -6,6 +7,7 @@ using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -60,6 +62,7 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
 });
 
+builder.Services.AddScoped<AuthorizationFilter>();
 
 var app = builder.Build();
 
@@ -78,9 +81,8 @@ app.UseRouting();
 app.UseMiddleware<AuthMiddleware>();
 app.UseHttpsRedirection();
 
-
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllers();
 

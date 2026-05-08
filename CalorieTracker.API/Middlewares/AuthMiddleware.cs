@@ -1,6 +1,7 @@
-﻿using CalorieTracker.API.Helpers;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using CalorieTracker.API.Attributes;
+using CalorieTracker.API.Helpers;
+using CalorieTracker.Application.Options;
+using Microsoft.Extensions.Options;
 
 namespace CalorieTracker.API.Middlewares
 {
@@ -13,44 +14,26 @@ namespace CalorieTracker.API.Middlewares
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, IOptions<JwtOptions> jwtOptions)
         {
-            var path = context.Request.Path.Value?.ToLower();
 
-            if (path == "/api/auth/sign-in")
+            var endpoint = context.GetEndpoint();
+
+            if (endpoint?.Metadata.GetMetadata<CustomAuthAttribute>() != null)
             {
-                await _next(context);
-                return;
+                var jwtToken = TokenHelper.ReadJwtToken(context);
+
+                if (jwtToken == null)
+                {
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Invalid token");
+                    return;
+                }
+
             }
 
-            var token = context.Request.Headers.Authorization.FirstOrDefault();
-
-            if (string.IsNullOrEmpty(token))
-            {
-                context.Response.StatusCode = 401;
-                await context.Response.WriteAsync("Unauthorized");
-                return;
-
-            }
-
-            var jwtToken = TokenHelper.ReadJwtToken(token);
-
-            if (jwtToken == null)
-            {
-                context.Response.StatusCode = 401;
-                await context.Response.WriteAsync("Invalid token");
-                return;
-            }
-
-            if(jwtToken.Issuer == "someone" && jwtToken.ValidTo.ToLocalTime() > DateTime.Now)
-            {
-               await _next(context);
-               return;
-            }
-
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync(" ");
-            return;
+            await _next(context);
+       
         }
     }
 }

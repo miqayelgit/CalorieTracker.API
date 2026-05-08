@@ -1,11 +1,19 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CalorieTracker.API.Helpers
 {
     public static class TokenHelper
     {
-        public static JwtSecurityToken ReadJwtToken(string token)
+        public static JwtSecurityToken ReadJwtToken(HttpContext context)
         {
+
+            var token = context.Request.Headers.Authorization.ToString();
+
+            if(string.IsNullOrEmpty(token))
+            {
+                return null;
+            }
 
             token = token.Substring("Bearer ".Length).Trim();
 
@@ -15,6 +23,7 @@ namespace CalorieTracker.API.Helpers
             {
                 return null;
             }
+            
             return tokenHandler.ReadJwtToken(token);
         }
     }
