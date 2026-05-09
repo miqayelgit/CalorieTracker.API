@@ -1,9 +1,9 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.UOW;
+using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Domain.Entities.ActivityGoals;
 using CalorieTracker.Dtos.ActivityGoals;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 
-namespace CalorieTracker.Application.Contracts.Services.ActivityGoals;
+namespace CalorieTracker.Application.Services.ActivityGoals;
 
 public class ActivityLevelService : IActivityLevelService
 {
@@ -15,61 +15,54 @@ public class ActivityLevelService : IActivityLevelService
     }
     public async Task SeedAsync()
     {
-       var levels = await _unitOfWork.ActivityLevelRepository.FirstOrDefaultAsync();
-
-        if (levels != null)
+        if (await _unitOfWork.ActivityLevelRepository.AnyAsync())
         {
             return;
         }
 
-        foreach (var level in ActivityLevels)
-        {
-            var activityLevel = new ActivityLevel
+        var entities = ActivityLevels
+            .Select(x => new ActivityLevel
             {
-                ActivityLevelName = level.Key,
-                ActivityLevelRate = level.Value
-            };
-
-            _unitOfWork.ActivityLevelRepository.Add(activityLevel);
-        }
-
+                ActivityLevelName = x.Key,
+                ActivityLevelRate = x.Value
+            });
+        
+        _unitOfWork.ActivityLevelRepository.AddRange(entities);
         await _unitOfWork.CommitAsync();
+        
+        // foreach (var level in ActivityLevels)
+        // {
+        //     var activityLevel = new ActivityLevel
+        //     {
+        //         ActivityLevelName = level.Key,
+        //         ActivityLevelRate = level.Value
+        //     };
+        //
+        //     _unitOfWork.ActivityLevelRepository.Add(activityLevel);
+        // }
+        //
+        // await _unitOfWork.CommitAsync();
     }
 
     public async Task<List<ActivityLevelDto>> GetActivityLevelsAsync()
     {
-
-        List<ActivityLevelDto> activityLevelsList = new List<ActivityLevelDto>();
+        var entities = await _unitOfWork.ActivityLevelRepository
+            .GetFromWhereAsync();
         
-        var levels =  await _unitOfWork.ActivityLevelRepository.GetFromWhereAsync();
-
-        if(levels == null)
-
-        {
-            return activityLevelsList;
-        }
-
-        foreach (var level in levels)
-        {
-            ActivityLevelDto dto = new ActivityLevelDto
+        return entities.Select(x => new ActivityLevelDto
             {
-                Id = level.Id,
-                ActivityLevelName = level.ActivityLevelName
-            };
-
-            activityLevelsList.Add(dto);
-        }
-
-        return activityLevelsList;
+                Id = x.Id,
+                Name = x.ActivityLevelName,
+            })
+            .ToList();
     }
 
-
-    public readonly Dictionary<string, float> ActivityLevels = new()
+    private static Dictionary<string, float> ActivityLevels => new()
     {
         { "Sedentary", 1.2f },
         { "Lightly Active", 1.375f },
         { "Moderately Active", 1.55f },
         { "Very Active", 1.725f },
-        { "Extra Active", 1.9f }
+        { "Extra Active", 1.9f },
     };
 }

@@ -2,6 +2,7 @@ using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Options;
+using CalorieTracker.Application.Services.ActivityGoals;
 using CalorieTracker.Application.Services.Security;
 using CalorieTracker.Application.Services.User;
 using Microsoft.Extensions.Configuration;

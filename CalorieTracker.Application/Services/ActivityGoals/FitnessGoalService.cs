@@ -1,9 +1,9 @@
-﻿
-using CalorieTracker.Application.Contracts.Repos.UOW;
+﻿using CalorieTracker.Application.Contracts.Repos.UOW;
+using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Domain.Entities.ActivityGoals;
 using CalorieTracker.Dtos.ActivityGoals;
 
-namespace CalorieTracker.Application.Contracts.Services.ActivityGoals;
+namespace CalorieTracker.Application.Services.ActivityGoals;
 
 public class FitnessGoalService : IFitnessGoalService
 {

@@ -54,21 +54,15 @@ public class ApplicationUserService : IApplicationUserService
        }
     }
 
-    public async Task<GetApplicationUserDto> GetUserByToken(JwtSecurityToken token)
+    public async Task<GetApplicationUserDto> GetProfileByIdAsync(Guid id)
     {
-        var nameClaim = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-
-        if (nameClaim == null)
-        {
-            throw new Exception("Claim is null");
-        }    
-        var user =  await _userManager.FindByNameAsync(nameClaim.Value);
-
+        var user =  await _userManager.FindByIdAsync(id.ToString());
+        
         if(user == null)
         {
             throw new NotFoundException("User not found!");
         }
-
+        
         return new GetApplicationUserDto
         {
             Id = user.Id,
@@ -76,7 +70,6 @@ public class ApplicationUserService : IApplicationUserService
             LastName = user.LastName,
             Email = user.Email
         };
-
     }
 
     public async Task UpdateUser(UpdateUserDto dto, JwtSecurityToken token)

@@ -1,6 +1,6 @@
+using System.Text;
 using CalorieTracker.API.Filters;
 using CalorieTracker.API.Middlewares;
-using CalorieTracker.Application.Contracts.Repos.ActivityGoals;
 using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
@@ -8,9 +8,10 @@ using CalorieTracker.Application.Options;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<DatabaseContext>(options => options
-                .UseSqlServer(connectionString, b => b.MigrationsAssembly("CalorieTracker.Infrastructure")));
+    .UseSqlServer(connectionString, b => b.MigrationsAssembly("CalorieTracker.Infrastructure")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -49,22 +50,44 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<DatabaseContext>()
-                .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
-
 builder.Services
-               .AddInfrastructureServices()
-               .AddApplicationServices();
+    .AddInfrastructureServices()
+    .AddApplicationServices();
 
 builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
 });
 
-builder.Services.AddScoped<AuthorizationFilter>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    var secretKey = builder.Configuration["JwtOptions:SecretKey"];
+    var aud = builder.Configuration["JwtOptions:Audience"];
+
+    options.Audience = aud;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true
+    };
+});
+
+builder.Services.AddAuthorization();
+
+// builder.Services.AddScoped<AuthorizationFilter>();
 
 var app = builder.Build();
 
@@ -84,13 +107,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseRouting();
-app.UseMiddleware<AuthMiddleware>();
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
-
 
 app.Run();

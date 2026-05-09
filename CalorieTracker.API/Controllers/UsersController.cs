@@ -5,16 +5,16 @@ using CalorieTracker.API.Mappers;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Dtos.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace CalorieTracker.API.Controllers;
 
-[CustomAuth]
-[ServiceFilter(typeof(AuthorizationFilter))]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class UsersController : ControllerBase
+public class UsersController : BaseController
 {
     private readonly IApplicationUserService _applicationUserService;
     private readonly IApplicationUserDataService _applicationUserDataService;
@@ -44,15 +44,14 @@ public class UsersController : ControllerBase
     {
         try
         {
-           
-            var jwtToken = TokenHelper.ReadJwtToken(HttpContext);
+            // var jwtToken = TokenHelper.ReadJwtToken(HttpContext);
+            //
+            // if (jwtToken == null)
+            // {
+            //     return BadRequest("Invalid token");
+            // }
 
-            if (jwtToken == null)
-            {
-                return BadRequest("Invalid token");
-            }
-
-            var user = await _applicationUserService.GetUserByToken(jwtToken);
+            var user = await _applicationUserService.GetProfileByIdAsync(UserId);
             return Ok(user);
 
         }

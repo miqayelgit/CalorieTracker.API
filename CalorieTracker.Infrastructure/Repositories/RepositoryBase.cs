@@ -18,6 +18,11 @@ internal abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where
         Context.Set<TEntity>().Add(entity);  
     }
 
+    public void AddRange(IEnumerable<TEntity> entities)
+    {
+        Context.Set<TEntity>().AddRange(entities);  
+    }
+
     public void Update(TEntity entity)
     {
         Context.Set<TEntity>().Update(entity);
@@ -37,6 +42,15 @@ internal abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where
 
         return Context.Set<TEntity>().FirstOrDefaultAsync(expression);
     }
+
+    public Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? expression = null)
+    {
+        if (expression == null)
+            return Context.Set<TEntity>().AnyAsync();
+        
+        return Context.Set<TEntity>().AnyAsync(expression);
+    }
+
 
     public Task<List<TEntity>> GetFromWhereAsync(Expression<Func<TEntity, bool>>? expression = null)
     {

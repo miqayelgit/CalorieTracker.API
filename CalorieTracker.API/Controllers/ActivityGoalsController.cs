@@ -34,5 +34,4 @@ public class ActivityGoalsController : ControllerBase
         var levels = await _fitnessGoalService.GetFitnessGoalsAsync();
         return Ok(levels);
     }
-
 }

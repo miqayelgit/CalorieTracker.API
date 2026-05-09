@@ -8,6 +8,6 @@ public interface IApplicationUserService
 {
     public Task RegisterAsync(RegistrationDto dto);
 
-    public Task<GetApplicationUserDto> GetUserByToken(JwtSecurityToken token);
+    public Task<GetApplicationUserDto> GetProfileByIdAsync(Guid id);
     public Task UpdateUser(UpdateUserDto dto, JwtSecurityToken token);
 }

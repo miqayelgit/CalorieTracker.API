@@ -11,7 +11,7 @@ namespace CalorieTracker.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : BaseController
 {
     private readonly IAuthenticationService _authenticationService;
 
@@ -20,7 +20,12 @@ public class AuthController : ControllerBase
         _authenticationService = authenticationService;
     }
 
-
+    [HttpGet("auth-check")]
+    public IActionResult CheckAuth()
+    {
+        return Ok(UserId);
+    }
+    
     [HttpPost]
     [Route("sign-in")]
     public async Task<IActionResult> SignIn([FromBody]SignInDto dto)
