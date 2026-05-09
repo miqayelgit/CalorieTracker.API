@@ -4,6 +4,7 @@ using CalorieTracker.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalorieTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260509110949_addActivityLevelUnique")]
+    partial class addActivityLevelUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("ActivityLevelName")
-                        .HasName("UQ_ActivityLevel_ActivityLevelName");
+                        .HasName("UQ_ActivityLevelName");
 
                     b.ToTable("ActivityLevel", (string)null);
                 });
@@ -65,9 +68,6 @@ namespace CalorieTracker.Infrastructure.Migrations
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("GoalName")
-                        .HasName("UQ_FitnessGoals_GoalName");
 
                     b.ToTable("FitnessGoals", (string)null);
                 });
@@ -120,7 +120,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 9, 11, 12, 14, 715, DateTimeKind.Utc).AddTicks(5002));
+                        .HasDefaultValue(new DateTime(2026, 5, 9, 11, 9, 49, 605, DateTimeKind.Utc).AddTicks(1164));
 
                     b.Property<string>("Email")
                         .IsRequired()

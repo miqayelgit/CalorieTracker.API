@@ -1,3 +1,4 @@
+using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Options;
@@ -16,6 +17,9 @@ public static class ApplicationExtensions
         services.AddScoped<IApplicationUserService, ApplicationUserService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IActivityLevelService, ActivityLevelService>();
+        services.AddScoped<IFitnessGoalService, FitnessGoalService>();
+        services.AddScoped<IApplicationUserDataService, ApplicationUserDataService>();
 
         return services;
     }

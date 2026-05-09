@@ -17,10 +17,12 @@ namespace CalorieTracker.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IApplicationUserDataService _applicationUserDataService;
 
-    public UsersController(IApplicationUserService applicationUserService)
+    public UsersController(IApplicationUserService applicationUserService, IApplicationUserDataService applicationUserDataService)
     {
         _applicationUserService = applicationUserService;
+        _applicationUserDataService = applicationUserDataService;
     }
 
     [HttpPost]
@@ -83,4 +85,17 @@ public class UsersController : ControllerBase
         }
 
     }
+
+    [HttpPost("user-data")]
+    public async Task<IActionResult> FillApplicationUserData([FromBody] ApplicationUserDataDto dto)
+    {
+        await _applicationUserDataService.FillUserData(dto);
+        return Ok();
+    }
+
+    //public async Task<IActionResult> GetUserData()
+    //{
+    //    await _applicationUserDataService.FillUserData(dto);
+    //    return Ok();
+    //}
 } 

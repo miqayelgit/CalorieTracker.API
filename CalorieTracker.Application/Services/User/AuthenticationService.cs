@@ -2,7 +2,7 @@
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Domain.Entities.User;
-using CalorieTracker.Dtos.Users;
+using CalorieTracker.Dtos.Auth;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -55,7 +55,7 @@ public class AuthenticationService : IAuthenticationService
     //read what means useAutorization middleware+
     //add endpoints. Change user related data+
     //after this read how allow only authorized users to access endpoint+
-    //read about JWT - didn't but remember +
+    //read about JWT - didn't but l +
     //create project like this for Admin with different methods. Not methods +-
     //role based authorization -
     //add endpoint to add user data - 

@@ -1,5 +1,7 @@
 using CalorieTracker.API.Filters;
 using CalorieTracker.API.Middlewares;
+using CalorieTracker.Application.Contracts.Repos.ActivityGoals;
+using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
@@ -68,8 +70,12 @@ var app = builder.Build();
 
 using var scope = app.Services.CreateScope();   
 var roleService = scope.ServiceProvider.GetRequiredService<IApplicationRoleService>();
+var activityLevelService = scope.ServiceProvider.GetRequiredService<IActivityLevelService>();
+var fitnessGoalService = scope.ServiceProvider.GetRequiredService<IFitnessGoalService>();
 
 await roleService.SeedAsync();
+await activityLevelService.SeedAsync();
+await fitnessGoalService.SeedAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

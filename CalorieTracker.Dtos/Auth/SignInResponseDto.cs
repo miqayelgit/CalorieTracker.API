@@ -1,5 +1,4 @@
-﻿
-namespace CalorieTracker.Dtos.Users;
+﻿namespace CalorieTracker.Dtos.Auth;
 
 public class SignInResponseDto
 {
