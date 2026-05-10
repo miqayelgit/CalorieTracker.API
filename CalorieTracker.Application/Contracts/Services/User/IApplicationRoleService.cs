@@ -2,5 +2,4 @@
 
 public interface IApplicationRoleService
 {
-    Task SeedAsync();
 }

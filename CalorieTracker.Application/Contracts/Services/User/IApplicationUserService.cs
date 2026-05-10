@@ -7,7 +7,6 @@ namespace CalorieTracker.Application.Contracts.Services.User;
 public interface IApplicationUserService
 {
     public Task RegisterAsync(RegistrationDto dto);
-
     public Task<GetApplicationUserDto> GetProfileByIdAsync(Guid id);
-    public Task UpdateUser(UpdateUserDto dto, JwtSecurityToken token);
+    public Task UpdateUser(UpdateUserDto dto);
 }

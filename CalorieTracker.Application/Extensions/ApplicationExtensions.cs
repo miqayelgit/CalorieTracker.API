@@ -1,4 +1,5 @@
 using CalorieTracker.Application.Contracts.Services.ActivityGoals;
+using CalorieTracker.Application.Contracts.Services.Products;
 using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Options;
@@ -21,6 +22,7 @@ public static class ApplicationExtensions
         services.AddScoped<IActivityLevelService, ActivityLevelService>();
         services.AddScoped<IFitnessGoalService, FitnessGoalService>();
         services.AddScoped<IApplicationUserDataService, ApplicationUserDataService>();
+        services.AddScoped<IProductService, ProductService>();
 
         return services;
     }

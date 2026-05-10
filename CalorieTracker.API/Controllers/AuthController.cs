@@ -1,11 +1,7 @@
-﻿using CalorieTracker.API.Attributes;
-using CalorieTracker.API.Mappers;
-using CalorieTracker.Application.Contracts.Services.User;
-using CalorieTracker.Application.Exceptions;
+﻿using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Dtos.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CalorieTracker.API.Controllers;
 
@@ -20,6 +16,7 @@ public class AuthController : BaseController
         _authenticationService = authenticationService;
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("auth-check")]
     public IActionResult CheckAuth()
     {
@@ -30,45 +27,24 @@ public class AuthController : BaseController
     [Route("sign-in")]
     public async Task<IActionResult> SignIn([FromBody]SignInDto dto)
     {
-        try
-        {
-            var user = await _authenticationService.SignInUser(dto);
-            return Ok(user);
-        }
-        catch (CustomException ex)
-        {
-            return ExceptionMapper.MapException(ex, this);
-        }
+        var user = await _authenticationService.SignInUser(dto);
+        return Ok(user);
     }
 
     [HttpPost]
     [Route("forgot-password")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
     {
-        try
-        {
-            string token = await _authenticationService.ForgotPassword(dto);
-            return Ok(token);
+       string token = await _authenticationService.ForgotPassword(dto);
+       return Ok(token);
 
-        }
-        catch (CustomException ex)
-        {
-            return ExceptionMapper.MapException(ex, this);
-        }
     }
 
     [HttpPost]
     [Route("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
     {
-        try
-        {
-           await _authenticationService.ResetPassword(dto);
-           return Ok();
-        }
-        catch (CustomException ex)
-        {
-           return ExceptionMapper.MapException(ex, this);
-        }
+       await _authenticationService.ResetPassword(dto);
+       return Ok();
     }
 }

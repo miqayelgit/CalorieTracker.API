@@ -1,7 +1,4 @@
-using CalorieTracker.API.Attributes;
-using CalorieTracker.API.Filters;
 using CalorieTracker.API.Helpers;
-using CalorieTracker.API.Mappers;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
 using CalorieTracker.Dtos.Users;
@@ -42,46 +39,19 @@ public class UsersController : BaseController
     [HttpGet("profile")]
     public async Task<IActionResult> GetUserProfile()
     {
-        try
-        {
-            // var jwtToken = TokenHelper.ReadJwtToken(HttpContext);
-            //
-            // if (jwtToken == null)
-            // {
-            //     return BadRequest("Invalid token");
-            // }
+        var user = await _applicationUserService.GetProfileByIdAsync(UserId);
+        return Ok(user);
 
-            var user = await _applicationUserService.GetProfileByIdAsync(UserId);
-            return Ok(user);
-
-        }
-        catch (CustomException ex)
-        {
-           return ExceptionMapper.MapException(ex, this);
-        }
 
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateUser(UpdateUserDto dto)
     {
-        try
-        {
-            var jwtToken = TokenHelper.ReadJwtToken(HttpContext);
 
-            if (jwtToken == null)
-            {
-                return BadRequest("Invalid token");
-            }
 
-            await _applicationUserService.UpdateUser(dto, jwtToken);
-            return Ok();
-
-        }
-        catch (CustomException ex)
-        {
-            return ExceptionMapper.MapException(ex, this);
-        }
+        await _applicationUserService.UpdateUser(dto);
+        return Ok();
 
     }
 

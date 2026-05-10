@@ -1,6 +1,4 @@
-﻿
-using CalorieTracker.Dtos.Auth;
-using Microsoft.AspNetCore.Identity;
+﻿using CalorieTracker.Dtos.Auth;
 
 namespace CalorieTracker.Application.Contracts.Services.User;
 

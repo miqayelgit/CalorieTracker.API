@@ -24,7 +24,7 @@ public class ApplicationUserService : IApplicationUserService
 
        if (user != null)
        {
-           throw new Exception("User is already exists");
+           throw new Exception("User already exists");
        }
 
        var newUser = new ApplicationUser
@@ -72,15 +72,9 @@ public class ApplicationUserService : IApplicationUserService
         };
     }
 
-    public async Task UpdateUser(UpdateUserDto dto, JwtSecurityToken token)
+    public async Task UpdateUser(UpdateUserDto dto)
     {
-        var nameClaim = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-
-        if (nameClaim == null)
-        {
-            throw new Exception("Claim is null");
-        }
-        var user = await _userManager.FindByNameAsync(nameClaim.Value);
+        var user = await _userManager.FindByIdAsync(dto.Id);
 
         if (user == null)
         {

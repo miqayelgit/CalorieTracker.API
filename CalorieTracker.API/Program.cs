@@ -1,8 +1,4 @@
-using System.Text;
-using CalorieTracker.API.Filters;
-using CalorieTracker.API.Middlewares;
-using CalorieTracker.Application.Contracts.Services.ActivityGoals;
-using CalorieTracker.Application.Contracts.Services.User;
+using CalorieTracker.Application.Contracts.Services.Seed;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
 using CalorieTracker.Domain.Entities.User;
@@ -13,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,23 +53,23 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
+
 builder.Services
     .AddInfrastructureServices()
-    .AddApplicationServices();
+    .AddApplicationServices()
+    .AddSeedServices();
 
-builder.Services.AddRouting(options =>
-{
-    options.LowercaseUrls = true;
-});
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    var secretKey = builder.Configuration["JwtOptions:SecretKey"];
-    var aud = builder.Configuration["JwtOptions:Audience"];
+    var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
+    var secretKey = jwtOptions!.Secret;
+    var aud = jwtOptions.Audience;
 
     options.Audience = aud;
     options.TokenValidationParameters = new TokenValidationParameters
@@ -81,7 +79,17 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true
+        ValidateLifetime = true,
+        RoleClaimType = ClaimTypes.Role
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = ctx =>
+        {
+            ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        }      
+
     };
 });
 
@@ -92,13 +100,13 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();   
-var roleService = scope.ServiceProvider.GetRequiredService<IApplicationRoleService>();
-var activityLevelService = scope.ServiceProvider.GetRequiredService<IActivityLevelService>();
-var fitnessGoalService = scope.ServiceProvider.GetRequiredService<IFitnessGoalService>();
+var roleSeedService = scope.ServiceProvider.GetRequiredService<IApplicationRoleSeedService>();
+var activityLevelSeedService = scope.ServiceProvider.GetRequiredService<IActivityLevelSeedService>();
+var fitnessGoalSeedService = scope.ServiceProvider.GetRequiredService<IFitnessGoalSeedService>();
 
-await roleService.SeedAsync();
-await activityLevelService.SeedAsync();
-await fitnessGoalService.SeedAsync();
+await roleSeedService.SeedAsync();
+await activityLevelSeedService.SeedAsync();
+await fitnessGoalSeedService.SeedAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

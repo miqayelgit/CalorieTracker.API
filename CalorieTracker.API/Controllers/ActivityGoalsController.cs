@@ -1,13 +1,8 @@
-﻿using CalorieTracker.API.Attributes;
-using CalorieTracker.API.Filters;
-using CalorieTracker.Application.Contracts.Services.ActivityGoals;
-using CalorieTracker.Dtos.ActivityGoals;
+﻿using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.API.Controllers;
 
-[CustomAuth]
-[ServiceFilter(typeof(AuthorizationFilter))]
 [ApiController]
 [Route("api/[controller]")]
 public class ActivityGoalsController : ControllerBase
