@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace CalorieTracker.API.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : BaseController
@@ -25,17 +24,11 @@ public class UsersController : BaseController
     [HttpPost]
     public async Task<IActionResult> RegisterAsync([FromBody] RegistrationDto request)
     {
-        var token = Request.Headers.Authorization.FirstOrDefault();
-
-        if (string.IsNullOrEmpty(token))
-        {
-            return Unauthorized();
-        }
-
         await _applicationUserService.RegisterAsync(request);
         return Ok();
     }
 
+    [Authorize]
     [HttpGet("profile")]
     public async Task<IActionResult> GetUserProfile()
     {
@@ -45,6 +38,7 @@ public class UsersController : BaseController
 
     }
 
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateUser(UpdateUserDto dto)
     {
@@ -55,6 +49,7 @@ public class UsersController : BaseController
 
     }
 
+    [Authorize]
     [HttpPost("user-data")]
     public async Task<IActionResult> FillApplicationUserData([FromBody] ApplicationUserDataDto dto)
     {

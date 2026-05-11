@@ -18,7 +18,7 @@ public class JwtTokenService : IJwtTokenService
         _jwtOptions = jwtOptions.Value;
     }
 
-    public string Generate(ApplicationUser user)
+    public string Generate(ApplicationUser user, IList<string> roles)
     {
         var signingKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_jwtOptions.Secret));
@@ -31,9 +31,10 @@ public class JwtTokenService : IJwtTokenService
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
-            new Claim(ClaimTypes.Role, "Admin"),
+            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty)
         };
+
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationTimeInMinutes);
 

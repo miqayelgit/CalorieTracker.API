@@ -33,6 +33,8 @@ public class AuthenticationService : IAuthenticationService
             throw new NotFoundException("User does not exist!"); 
         }
 
+        var roles = await _userManager.GetRolesAsync(user);
+
         var result =  await _signInManager
             .PasswordSignInAsync(dto.UserName, dto.Password, false, false);
 
@@ -41,26 +43,13 @@ public class AuthenticationService : IAuthenticationService
             throw new InvalidInputException("Incorrect password!");
         }
 
-        var token =  _jwtTokenService.Generate(user);
+        var token =  _jwtTokenService.Generate(user, roles);
         
         return new SignInResponseDto
         {
            Token = token
         };
     }
-
-    //return token in response + 
-    //What is middleware + read filter
-    //create get profile endpoint. User should not send anything. Only for authorized users+
-    //read what means useAutorization middleware+
-    //add endpoints. Change user related data+
-    //after this read how allow only authorized users to access endpoint+
-    //read about JWT - didn't but l +
-    //create project like this for Admin with different methods. Not methods +-
-    //role based authorization -
-    //add endpoint to add user data - 
-    //
-
 
     public async Task<string> ForgotPassword(ForgotPasswordDto dto)
     {

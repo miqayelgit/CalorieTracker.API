@@ -5,6 +5,7 @@ using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
 using CalorieTracker.Dtos.Product;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography.Xml;
 
 namespace CalorieTracker.Application.Contracts.Services.Products;
 
@@ -44,13 +45,15 @@ public class ProductService : IProductService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<ProductDto>> GetProducts()
+    public async Task<List<ProductDto>> GetProducts(Guid userId)
     {
-        var products =  await _unitOfWork.ProductRepository.GetFromWhereAsync();
+        var products =  await _unitOfWork.ProductRepository
+            .GetFromWhereAsync(p => p.UserId == userId || p.VisibilityScope == VisibilityScope.Public);
 
         return products
             .Select(product => new ProductDto
             { 
+                UserId = product.UserId,
                 Name = product.ProductName,
                 ProteinPerHundredGram = product.ProteinPerHundredGram,
                 CarbsPerHundredGram = product.CarbsPerHundredGram,

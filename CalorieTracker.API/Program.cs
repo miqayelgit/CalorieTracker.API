@@ -70,11 +70,12 @@ builder.Services.AddAuthentication(options =>
     var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
     var secretKey = jwtOptions!.Secret;
     var aud = jwtOptions.Audience;
+    var issuer = jwtOptions.Issuer;
 
     options.Audience = aud;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+        ValidIssuer = issuer,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
         ValidateIssuer = true,
@@ -94,8 +95,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-
-// builder.Services.AddScoped<AuthorizationFilter>();
 
 var app = builder.Build();
 

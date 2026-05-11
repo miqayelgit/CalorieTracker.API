@@ -1,9 +1,11 @@
 ﻿using CalorieTracker.Application.Contracts.Services.Products;
 using CalorieTracker.Dtos.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ProductController : BaseController
@@ -25,7 +27,7 @@ public class ProductController : BaseController
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var products = await _productService.GetProducts();
+        var products = await _productService.GetProducts(UserId);
         return Ok(products);
     }
 }
