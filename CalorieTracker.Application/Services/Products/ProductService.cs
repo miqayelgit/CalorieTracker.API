@@ -5,7 +5,6 @@ using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
 using CalorieTracker.Dtos.Product;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Cryptography.Xml;
 
 namespace CalorieTracker.Application.Contracts.Services.Products;
 
@@ -20,46 +19,37 @@ public class ProductService : IProductService
         _userManager = userManager;
     }
 
-    public async Task AddProduct(ProductDto dto)
+    public async Task AddProductAsync(Guid userId, ProductDto dto)
     {
-        var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
-        if (user == null)
-        {
-            return;
-        }
-
-        var visibilityScope = user.Roles.Any(x => x.Name == "Admin") ? VisibilityScope.Public : VisibilityScope.Private;
-
         var entity = new Product
         {
-            UserId = dto.UserId,
+            UserId = userId,
             ProductName = dto.Name,
             ProteinPerHundredGram = dto.ProteinPerHundredGram,
             CarbsPerHundredGram = dto.CarbsPerHundredGram,
             FatPerHundredGram = dto.FatPerHundredGram,
             CaloriesPerHundredGram = dto.CaloriesPerHundredGram,
-            VisibilityScope = visibilityScope
+            VisibilityScope = VisibilityScope.Private
         };
 
         _unitOfWork.ProductRepository.Add(entity);
+        
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task<List<ProductDto>> GetProducts(Guid userId)
+    public async Task<List<ProductDto>> GetProductsAsync(Guid userId)
     {
-        var products =  await _unitOfWork.ProductRepository
+        var products = await _unitOfWork.ProductRepository
             .GetFromWhereAsync(p => p.UserId == userId || p.VisibilityScope == VisibilityScope.Public);
 
         return products
             .Select(product => new ProductDto
-            { 
-                UserId = product.UserId,
+            {
                 Name = product.ProductName,
                 ProteinPerHundredGram = product.ProteinPerHundredGram,
                 CarbsPerHundredGram = product.CarbsPerHundredGram,
                 FatPerHundredGram = product.FatPerHundredGram,
                 CaloriesPerHundredGram = product.CaloriesPerHundredGram
-            })
-            .ToList();
+            }).ToList();
     }
 }

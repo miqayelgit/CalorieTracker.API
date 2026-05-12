@@ -30,8 +30,8 @@ public class JwtTokenService : IJwtTokenService
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty)
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.UserName ?? string.Empty),
         };
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

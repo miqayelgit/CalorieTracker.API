@@ -5,6 +5,6 @@ namespace CalorieTracker.Application.Contracts.Services.Products;
 
 public interface IProductService
 {
-    Task AddProduct(ProductDto dtol);
-    Task<List<ProductDto>> GetProducts(Guid userId);
+    Task AddProductAsync(Guid userId, ProductDto dto);
+    Task<List<ProductDto>> GetProductsAsync(Guid userId);
 }

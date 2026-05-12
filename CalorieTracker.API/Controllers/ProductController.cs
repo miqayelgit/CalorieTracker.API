@@ -18,16 +18,16 @@ public class ProductController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ProductDto dto)
+    public async Task<IActionResult> CreateAsync([FromBody] ProductDto dto)
     {
-        await _productService.AddProduct(dto);
+        await _productService.AddProduct(UserId, dto);
         return Ok();
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var products = await _productService.GetProducts(UserId);
+        var products = await _productService.GetProductsAsync(UserId);
         return Ok(products);
     }
 }

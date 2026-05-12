@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
+using CalorieTracker.Application.Exceptions.Users;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Dtos.Auth;
 using Microsoft.AspNetCore.Identity;
@@ -30,17 +31,17 @@ public class AuthenticationService : IAuthenticationService
 
         if (user == null)
         {
-            throw new NotFoundException("User does not exist!"); 
+            throw new IncorrectUserCredentialsException("Incorrect credentials");
         }
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        var result =  await _signInManager
-            .PasswordSignInAsync(dto.UserName, dto.Password, false, false);
+        var isCorrectPassword = await _userManager
+            .CheckPasswordAsync(user, dto.Password);
 
-        if (!result.Succeeded)
+        if (!isCorrectPassword)
         {
-            throw new InvalidInputException("Incorrect password!");
+            throw new IncorrectUserCredentialsException("Incorrect credentials");
         }
 
         var token =  _jwtTokenService.Generate(user, roles);
@@ -48,6 +49,7 @@ public class AuthenticationService : IAuthenticationService
         return new SignInResponseDto
         {
            Token = token
+            // TODO : Add refresh token
         };
     }
 
@@ -60,18 +62,21 @@ public class AuthenticationService : IAuthenticationService
             throw new NotFoundException("User not found!");
         }
 
+        // TODO : Send token to user email
         return await _userManager.GeneratePasswordResetTokenAsync(user);
     }
 
     public async Task ResetPassword(ResetPasswordDto dto)
     {
         var user = await _userManager.FindByNameAsync(dto.Username);
+
         if(user == null)
         {
             throw new NotFoundException("User not found!");
         }
 
-        var identityResult = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+        var identityResult = await _userManager
+            .ResetPasswordAsync(user, dto.Token, dto.NewPassword);
 
         if (!identityResult.Succeeded)
         {

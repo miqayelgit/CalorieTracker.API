@@ -13,7 +13,6 @@ public class ActivityLevelService : IActivityLevelService
         _unitOfWork = unitOfWork;
     }
     
-
     public async Task<List<ActivityLevelDto>> GetActivityLevelsAsync()
     {
         var entities = await _unitOfWork.ActivityLevelRepository

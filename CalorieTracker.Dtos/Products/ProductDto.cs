@@ -1,8 +1,7 @@
-﻿namespace CalorieTracker.Dtos.Product;
+﻿namespace CalorieTracker.Dtos.Products;
 
 public class ProductDto
 {
-    public Guid UserId { get; set; }
     public string Name { get; set; } = null!;
     public float ProteinPerHundredGram { get; set; }
     public float FatPerHundredGram { get; set; }

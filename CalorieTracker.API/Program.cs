@@ -1,3 +1,4 @@
+using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.Seed;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
@@ -89,8 +90,7 @@ builder.Services.AddAuthentication(options =>
         {
             ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
             return Task.CompletedTask;
-        }      
-
+        }
     };
 });
 
@@ -98,7 +98,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-using var scope = app.Services.CreateScope();   
+using var scope = app.Services.CreateScope();
 var roleSeedService = scope.ServiceProvider.GetRequiredService<IApplicationRoleSeedService>();
 var activityLevelSeedService = scope.ServiceProvider.GetRequiredService<IActivityLevelSeedService>();
 var fitnessGoalSeedService = scope.ServiceProvider.GetRequiredService<IFitnessGoalSeedService>();
@@ -113,6 +113,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseRouting();
 app.UseHttpsRedirection();
 
