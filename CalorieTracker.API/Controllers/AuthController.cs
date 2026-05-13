@@ -16,7 +16,7 @@ public class AuthController : BaseController
         _authenticationService = authenticationService;
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpGet("auth-check")]
     public IActionResult CheckAuth()
     {

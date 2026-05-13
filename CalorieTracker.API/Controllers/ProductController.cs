@@ -1,5 +1,5 @@
 ﻿using CalorieTracker.Application.Contracts.Services.Products;
-using CalorieTracker.Dtos.Product;
+using CalorieTracker.Dtos.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +20,7 @@ public class ProductController : BaseController
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] ProductDto dto)
     {
-        await _productService.AddProduct(UserId, dto);
+        await _productService.AddProductAsync(UserId, dto);
         return Ok();
     }
 

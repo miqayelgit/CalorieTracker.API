@@ -6,10 +6,12 @@ using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Security.Claims;
 using System.Text;
 
@@ -59,6 +61,9 @@ builder.Services
     .AddInfrastructureServices()
     .AddApplicationServices()
     .AddSeedServices();
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 
 builder.Services.AddAuthentication(options =>
@@ -113,6 +118,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseSerilogRequestLogging();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

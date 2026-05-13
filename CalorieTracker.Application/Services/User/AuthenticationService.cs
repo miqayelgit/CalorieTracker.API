@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
+using CalorieTracker.Application.Exceptions.Common;
 using CalorieTracker.Application.Exceptions.Users;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Dtos.Auth;
@@ -59,7 +60,7 @@ public class AuthenticationService : IAuthenticationService
 
         if (user == null)
         {
-            throw new NotFoundException("User not found!");
+            throw new ApplicationNotFoundException("User not found!");
         }
 
         // TODO : Send token to user email
@@ -72,7 +73,7 @@ public class AuthenticationService : IAuthenticationService
 
         if(user == null)
         {
-            throw new NotFoundException("User not found!");
+            throw new ApplicationNotFoundException("User not found!");
         }
 
         var identityResult = await _userManager
@@ -80,7 +81,7 @@ public class AuthenticationService : IAuthenticationService
 
         if (!identityResult.Succeeded)
         {
-            throw new InvalidInputException("Unable to reset password");
+            throw new IncorrectUserCredentialsException("Unable to reset password");
         }
     }
 }

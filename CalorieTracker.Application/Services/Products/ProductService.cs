@@ -3,7 +3,7 @@ using CalorieTracker.Application.Contracts.Repos.UOW;
 using CalorieTracker.Domain.Entities.Product;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
-using CalorieTracker.Dtos.Product;
+using CalorieTracker.Dtos.Products;
 using Microsoft.AspNetCore.Identity;
 
 namespace CalorieTracker.Application.Contracts.Services.Products;
@@ -33,7 +33,7 @@ public class ProductService : IProductService
         };
 
         _unitOfWork.ProductRepository.Add(entity);
-        
+
         await _unitOfWork.CommitAsync();
     }
 

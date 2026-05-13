@@ -1,5 +1,6 @@
 ﻿using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions;
+using CalorieTracker.Application.Exceptions.Common;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Domain.Enums;
 using CalorieTracker.Dtos.Users;
@@ -58,7 +59,7 @@ public class ApplicationUserService : IApplicationUserService
         
         if(user == null)
         {
-            throw new NotFoundException("User not found!");
+            throw new ApplicationNotFoundException("User not found!");
         }
         
         return new GetApplicationUserDto
@@ -76,7 +77,7 @@ public class ApplicationUserService : IApplicationUserService
 
         if (user == null)
         {
-            throw new NotFoundException("User not found!");
+            throw new ApplicationNotFoundException("User not found!");
         }
 
         user.Email = dto.Email;

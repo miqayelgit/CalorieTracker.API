@@ -1,5 +1,5 @@
 ﻿
-using CalorieTracker.Dtos.Product;
+using CalorieTracker.Dtos.Products;
 
 namespace CalorieTracker.Application.Contracts.Services.Products;
 

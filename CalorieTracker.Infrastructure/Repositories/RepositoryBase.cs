@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using CalorieTracker.Infrastructure.Context;
+using CalorieTracker.Application.Services.ActivityGoals;
+using Microsoft.Extensions.Logging;
 
 namespace CalorieTracker.Infrastructure.Repositories;
 

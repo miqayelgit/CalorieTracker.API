@@ -9,11 +9,13 @@ public class ActivityGoalsController : ControllerBase
 {
     private readonly IActivityLevelService _activityLevelService;
     private readonly IFitnessGoalService _fitnessGoalService;
+    private readonly ILogger<ActivityGoalsController> _logger;
 
-    public ActivityGoalsController(IActivityLevelService activityLevelService, IFitnessGoalService fitnessGoalService)
+    public ActivityGoalsController(IActivityLevelService activityLevelService, IFitnessGoalService fitnessGoalService, ILogger<ActivityGoalsController> logger)
     {
         _activityLevelService = activityLevelService;
         _fitnessGoalService = fitnessGoalService;
+        _logger = logger;
     }
 
     [HttpGet("activity-levels")]
