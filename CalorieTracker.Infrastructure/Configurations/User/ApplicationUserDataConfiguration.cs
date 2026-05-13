@@ -32,5 +32,8 @@ internal class ApplicationUserDataConfiguration : IEntityTypeConfiguration<Appli
 
         builder.Property(x => x.Age)
             .IsRequired();
+
+        builder.Property(x => x.Gender)
+            .IsRequired();
     }
 }

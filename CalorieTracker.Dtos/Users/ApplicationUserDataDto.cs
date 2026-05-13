@@ -9,4 +9,5 @@ public class ApplicationUserDataDto
     public short Height { get; set; }
     public short Weight { get; set; }
     public byte Age { get; set; }
+    public string Gender { get; set; } = null!;
 }

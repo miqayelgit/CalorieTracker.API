@@ -34,19 +34,14 @@ public class UsersController : BaseController
     {
         var user = await _applicationUserService.GetProfileByIdAsync(UserId);
         return Ok(user);
-
-
     }
 
     [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateUser(UpdateUserDto dto)
     {
-
-
-        await _applicationUserService.UpdateUser(dto);
-        return Ok();
-
+       await _applicationUserService.UpdateUser(dto);
+       return Ok();
     }
 
     [Authorize]
@@ -62,4 +57,4 @@ public class UsersController : BaseController
     //    await _applicationUserDataService.FillUserData(dto);
     //    return Ok();
     //}
-} 
+}

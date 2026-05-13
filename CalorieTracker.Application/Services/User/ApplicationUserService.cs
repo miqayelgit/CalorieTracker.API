@@ -56,7 +56,7 @@ public class ApplicationUserService : IApplicationUserService
     public async Task<GetApplicationUserDto> GetProfileByIdAsync(Guid id)
     {
         var user =  await _userManager.FindByIdAsync(id.ToString());
-        
+
         if(user == null)
         {
             throw new ApplicationNotFoundException("User not found!");

@@ -1,9 +1,10 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.UOW;
 using CalorieTracker.Application.Contracts.Services.User;
+using CalorieTracker.Application.Exceptions.Users;
+using CalorieTracker.Application.Services.Calculations;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Dtos.Users;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace CalorieTracker.Application.Services.User;
 
@@ -20,6 +21,11 @@ public class ApplicationUserDataService : IApplicationUserDataService
 
     public async Task FillUserData(ApplicationUserDataDto dto)
     {
+        if(!Genders.Contains(dto.Gender))
+        {
+            throw new IncorrectUserDataException("Gender possible values are: Male, Female");
+        }
+
         var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
 
         ApplicationUserData user2 = new ApplicationUserData
@@ -29,10 +35,17 @@ public class ApplicationUserDataService : IApplicationUserDataService
             FitnessGoalId = dto.FitnessGoalId,
             Height = dto.Height,
             Weight = dto.Weight,
-            Age = dto.Age
+            Age = dto.Age,
+            Gender = dto.Gender
         };
 
         _unitOfWork.ApplicationUserDataRepository.Add(user2);
+
+        var calculators = new UserDataCalculators(_unitOfWork);
+
+        var dailyCalorieLimit = await calculators
+            .CalculateUserDailyCalorieLimitsAsync(dto);
+
         await _unitOfWork.CommitAsync();
     }
 
@@ -40,4 +53,6 @@ public class ApplicationUserDataService : IApplicationUserDataService
     {
         throw new NotImplementedException();
     }
+
+    private static List<string> Genders = ["Male", "Female"];
 }

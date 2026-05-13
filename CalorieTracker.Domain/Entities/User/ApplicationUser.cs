@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Domain.Entities.DailyLimits;
+using CalorieTracker.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace CalorieTracker.Domain.Entities.User;
@@ -14,7 +15,7 @@ public class ApplicationUser : IdentityUser<Guid>
     public ICollection<IdentityUserRole<Guid>> UserRoles { get; set; } = [];
     public ICollection<IdentityRole> Roles { get; set; } = [];
 
-
+    
 
     // public ICollection<DailyCalorieLimit> DailyCalorieLimits { get; set; } = [];
     //public ICollection<DailyNutrientsIntakeAmount> DailyNutrientsIntakeAmounts { get; set; } = [];
