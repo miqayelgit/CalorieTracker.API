@@ -23,7 +23,7 @@ public class ApplicationUserService : IApplicationUserService
 
        if (user != null)
        {
-           throw new Exception("User already exists");
+           throw new ApplicationAlreadyExistsException("User already exists");
        }
 
        var newUser = new ApplicationUser
@@ -73,7 +73,7 @@ public class ApplicationUserService : IApplicationUserService
 
     public async Task UpdateUser(UpdateUserDto dto)
     {
-        var user = await _userManager.FindByIdAsync(dto.Id);
+        var user = await _userManager.FindByIdAsync(dto.Id.ToString());
 
         if (user == null)
         {

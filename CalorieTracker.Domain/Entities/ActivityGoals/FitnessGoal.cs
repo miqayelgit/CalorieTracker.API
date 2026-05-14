@@ -9,5 +9,6 @@ public class FitnessGoal
     public byte ProteinPercent { get; set; }
     public byte FatPercent { get; set; }
     public byte CarbsPercent { get; set; }
+    public short AdditionalCalories { get; set; }
     public ICollection<ApplicationUserData> UserDatas { get; set; } = [];
 }

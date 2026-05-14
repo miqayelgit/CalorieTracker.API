@@ -1,9 +1,11 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.ActivityGoals;
+using CalorieTracker.Application.Contracts.Repos.DailyLimits;
 using CalorieTracker.Application.Contracts.Repos.Products;
 using CalorieTracker.Application.Contracts.Repos.UOW;
 using CalorieTracker.Application.Contracts.Repos.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Repositories.ActivityGoals;
+using CalorieTracker.Infrastructure.Repositories.DailyLimits;
 using CalorieTracker.Infrastructure.Repositories.Products;
 using CalorieTracker.Infrastructure.Repositories.User;
 
@@ -31,6 +33,12 @@ internal class UnitOfWork : IUnitOfWork
 
     private IProductRepository? _productRepository;
     public IProductRepository ProductRepository => _productRepository ??= new ProductRepository(_context);
+
+    private IDailyCalorieLimitRepository? _dailyCalorieLimitRepository;
+    public IDailyCalorieLimitRepository DailyCalorieLimitRepository => _dailyCalorieLimitRepository ??= new DailyCalorieLimitRepository(_context);
+
+    private IDailyNutrientsIntakeAmountRepository _dailyNutrientsIntakeAmountRepository;
+    public IDailyNutrientsIntakeAmountRepository DailyNutrientsIntakeAmountRepository => _dailyNutrientsIntakeAmountRepository ??= new DailyNutrientsIntakeAmountRepository(_context);
 
     public async Task<int> CommitAsync()
     {

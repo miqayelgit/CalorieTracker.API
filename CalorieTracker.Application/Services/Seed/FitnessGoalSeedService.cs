@@ -25,7 +25,8 @@ public class FitnessGoalSeedService : IFitnessGoalSeedService
                 GoalName = macro.Name,
                 ProteinPercent = macro.Protein,
                 CarbsPercent = macro.Carbs,
-                FatPercent = macro.Fat
+                FatPercent = macro.Fat,
+                AdditionalCalories = macro.AdditionalCalories
             });
 
         _unitOfWork.FitnessGoalRepository.AddRange(entities);
@@ -34,10 +35,10 @@ public class FitnessGoalSeedService : IFitnessGoalSeedService
     } 
 
 
-    public static readonly List<(string Name,byte Protein, byte Carbs, byte Fat)> MacroPercentages = new()
+    public static readonly List<(string Name,byte Protein, byte Carbs, byte Fat, short AdditionalCalories)> MacroPercentages = new()
     {
-        ( "Lose Weight",40, 30, 30),
-        ( "Maintain",   30, 40, 30),
-        ( "Gain Weight", 30, 50, 20)
+        ( "Lose Weight",40, 30, 30, -500),
+        ( "Maintain",   30, 40, 30, 0),
+        ( "Gain Weight", 30, 50, 20, 500)
     };
 }

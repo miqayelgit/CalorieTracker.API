@@ -48,13 +48,15 @@ public class UsersController : BaseController
     [HttpPost("user-data")]
     public async Task<IActionResult> FillApplicationUserData([FromBody] ApplicationUserDataDto dto)
     {
-        await _applicationUserDataService.FillUserData(dto);
+        await _applicationUserDataService.FillUserData(UserId, dto);
         return Ok();
     }
 
-    //public async Task<IActionResult> GetUserData()
-    //{
-    //    await _applicationUserDataService.FillUserData(dto);
-    //    return Ok();
-    //}
+    [Authorize]
+    [HttpGet("user-data")]
+    public async Task<IActionResult> GetUserData()
+    {
+        var userData = await _applicationUserDataService.GetUserFullData(UserId);
+        return Ok(userData);
+    }
 }

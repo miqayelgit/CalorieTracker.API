@@ -5,7 +5,7 @@ namespace CalorieTracker.Application.Contracts.Services.User;
 
 public interface IApplicationUserDataService
 {
-    Task FillUserData(ApplicationUserDataDto dto);
-    public Task<ApplicationUser> GetUserFullData();
+    Task FillUserData(Guid userId, ApplicationUserDataDto dto);
+    public Task<UserFullDataDto> GetUserFullData(Guid userId);
 
 }

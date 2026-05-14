@@ -1,5 +1,6 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.UOW;
 using CalorieTracker.Application.Contracts.Services.User;
+using CalorieTracker.Application.Exceptions.Common;
 using CalorieTracker.Application.Exceptions.Users;
 using CalorieTracker.Application.Services.Calculations;
 using CalorieTracker.Domain.Entities.User;
@@ -19,18 +20,23 @@ public class ApplicationUserDataService : IApplicationUserDataService
         _userManager = userManager;
     }
 
-    public async Task FillUserData(ApplicationUserDataDto dto)
+    public async Task FillUserData(Guid userId, ApplicationUserDataDto dto)
     {
-        if(!Genders.Contains(dto.Gender))
+        if(!Genders.Contains(dto.Gender.ToLower()))
         {
             throw new IncorrectUserDataException("Gender possible values are: Male, Female");
         }
 
-        var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+        var user = await _userManager.FindByIdAsync(userId.ToString());
 
-        ApplicationUserData user2 = new ApplicationUserData
+        if(await _unitOfWork.ApplicationUserDataRepository.AnyAsync(x => x.Id == userId))
         {
-            Id = dto.UserId,
+            throw new ApplicationAlreadyExistsException("User Data already exists");
+        }
+
+        ApplicationUserData userData = new ApplicationUserData
+        {
+            Id = userId,
             ActivityLevelId = dto.ActivityLevelId,
             FitnessGoalId = dto.FitnessGoalId,
             Height = dto.Height,
@@ -39,20 +45,37 @@ public class ApplicationUserDataService : IApplicationUserDataService
             Gender = dto.Gender
         };
 
-        _unitOfWork.ApplicationUserDataRepository.Add(user2);
+        _unitOfWork.ApplicationUserDataRepository.Add(userData);
 
-        var calculators = new UserDataCalculators(_unitOfWork);
+        var calculators = new UserDataCalculators(_unitOfWork, userId);
 
-        var dailyCalorieLimit = await calculators
-            .CalculateUserDailyCalorieLimitsAsync(dto);
-
+        await calculators.CalculateUserDailyCalorieLimitsAsync(dto);
         await _unitOfWork.CommitAsync();
     }
 
-    public Task<ApplicationUser> GetUserFullData()
+    public async Task<UserFullDataDto> GetUserFullData(Guid userId)
     {
-        throw new NotImplementedException();
+        var user = await _unitOfWork.ApplicationUserDataRepository.GetUserFullData(x => x.Id == userId);
+
+        if(user == null)
+        {
+            throw new ApplicationNotFoundException("User not found");
+        }
+
+        return new UserFullDataDto
+        {
+            Id = userId,
+            FirstName = user.User!.FirstName,
+            LastName = user.User.LastName,
+            Email = user.User.Email,
+            ActivityLevelId = user.ActivityLevelId,
+            FitnessGoalId = user.FitnessGoalId,
+            Height = user.Height,
+            Weight = user.Weight,
+            Age = user.Age,
+            Gender = user.Gender
+        };
     }
 
-    private static List<string> Genders = ["Male", "Female"];
+    private static List<string> Genders = ["male", "female"];
 }

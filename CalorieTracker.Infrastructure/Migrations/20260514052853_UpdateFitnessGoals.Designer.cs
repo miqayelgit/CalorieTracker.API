@@ -4,6 +4,7 @@ using CalorieTracker.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalorieTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260514052853_UpdateFitnessGoals")]
+    partial class UpdateFitnessGoals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,61 +76,6 @@ namespace CalorieTracker.Infrastructure.Migrations
                         .HasName("UQ_FitnessGoals_GoalName");
 
                     b.ToTable("FitnessGoals", (string)null);
-                });
-
-            modelBuilder.Entity("CalorieTracker.Domain.Entities.DailyLimits.DailyCalorieLimit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-                    b.Property<short>("DailyLimit")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("RemainingLimit")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("UsedLimit")
-                        .HasColumnType("smallint");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DailyCalorieLimits", (string)null);
-                });
-
-            modelBuilder.Entity("CalorieTracker.Domain.Entities.DailyLimits.DailyNutrientsIntakeAmount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<short>("Carbs")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("Fat")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("Protein")
-                        .HasColumnType("smallint");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DailyNutrientsIntakeAmounts", (string)null);
                 });
 
             modelBuilder.Entity("CalorieTracker.Domain.Entities.Product.Product", b =>
@@ -213,7 +161,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 14, 13, 47, 47, 220, DateTimeKind.Utc).AddTicks(6027));
+                        .HasDefaultValue(new DateTime(2026, 5, 14, 5, 28, 53, 369, DateTimeKind.Utc).AddTicks(2472));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -454,32 +402,10 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CalorieTracker.Domain.Entities.DailyLimits.DailyCalorieLimit", b =>
-                {
-                    b.HasOne("CalorieTracker.Domain.Entities.User.ApplicationUser", "User")
-                        .WithMany("DailyCalorieLimits")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CalorieTracker.Domain.Entities.DailyLimits.DailyNutrientsIntakeAmount", b =>
-                {
-                    b.HasOne("CalorieTracker.Domain.Entities.User.ApplicationUser", "User")
-                        .WithMany("DailyNutrientsIntakeAmounts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CalorieTracker.Domain.Entities.Product.Product", b =>
                 {
                     b.HasOne("CalorieTracker.Domain.Entities.User.ApplicationUser", "User")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -597,12 +523,6 @@ namespace CalorieTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("CalorieTracker.Domain.Entities.User.ApplicationUser", b =>
                 {
-                    b.Navigation("DailyCalorieLimits");
-
-                    b.Navigation("DailyNutrientsIntakeAmounts");
-
-                    b.Navigation("Products");
-
                     b.Navigation("Roles");
 
                     b.Navigation("UserData")

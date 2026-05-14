@@ -30,6 +30,9 @@ public class FitnessGoalConfigutation : IEntityTypeConfiguration<FitnessGoal>
         builder.Property(x => x.CarbsPercent)
             .IsRequired();
 
+        builder.Property(x => x.AdditionalCalories)
+            .IsRequired();
+
         builder.HasAlternateKey(x => x.GoalName)
     .HasName("UQ_FitnessGoals_GoalName");
     }
