@@ -3,10 +3,11 @@ using CalorieTracker.Application.Contracts.Services.Seed;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
 using CalorieTracker.Domain.Entities.User;
+using CalorieTracker.Dtos.DtoValidators.Auth;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -65,6 +66,7 @@ builder.Services
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddValidatorsFromAssemblyContaining<SignInDtoValidator>();
 
 builder.Services.AddAuthentication(options =>
 {

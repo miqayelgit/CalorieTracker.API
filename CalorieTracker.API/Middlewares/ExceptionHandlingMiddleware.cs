@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.API.Controllers;
 using CalorieTracker.Application.Exceptions.Base;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace CalorieTracker.API.Middlewares;
 
@@ -33,6 +34,9 @@ public class ExceptionHandlingMiddleware
             BaseApplicationException applicationException =>
                 HandleApplicationExceptions(context, applicationException, _logger),
 
+            FluentValidation.ValidationException validationException =>
+                HandleValidationExceptions(context, validationException, _logger),
+
             _ =>
                 HandleInternalServerExceptions(context, exception, _logger)
         };
@@ -42,6 +46,18 @@ public class ExceptionHandlingMiddleware
     {
         var statusCode = exception.ErrorCode;
         var message = exception.Message;
+
+        _logger.LogError(message);
+
+        context.Response.StatusCode = statusCode;
+        await context.Response.WriteAsJsonAsync(
+            new ErrorResponse { Error = message });
+    }
+
+    private static async Task HandleValidationExceptions(HttpContext context, FluentValidation.ValidationException exception, ILogger<ExceptionHandlingMiddleware> _logger)
+    {
+        var statusCode = StatusCodes.Status400BadRequest;
+        var message = exception.Errors.Select(x => x.ErrorMessage).FirstOrDefault();
 
         _logger.LogError(message);
 

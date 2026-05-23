@@ -71,9 +71,9 @@ public class ApplicationUserService : IApplicationUserService
         };
     }
 
-    public async Task UpdateUser(UpdateUserDto dto)
+    public async Task UpdateUser(Guid userId, UpdateUserDto dto)
     {
-        var user = await _userManager.FindByIdAsync(dto.Id.ToString());
+        var user = await _userManager.FindByIdAsync(userId.ToString());
 
         if (user == null)
         {

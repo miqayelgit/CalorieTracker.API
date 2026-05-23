@@ -8,5 +8,5 @@ public interface IApplicationUserService
 {
     public Task RegisterAsync(RegistrationDto dto);
     public Task<GetApplicationUserDto> GetProfileByIdAsync(Guid id);
-    public Task UpdateUser(UpdateUserDto dto);
+    public Task UpdateUser(Guid userId, UpdateUserDto dto);
 }
