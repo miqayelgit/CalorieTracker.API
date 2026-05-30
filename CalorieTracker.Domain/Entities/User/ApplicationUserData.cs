@@ -1,6 +1,5 @@
 ﻿
 using CalorieTracker.Domain.Entities.ActivityGoals;
-using System.Security.Principal;
 
 namespace CalorieTracker.Domain.Entities.User;
 
@@ -16,4 +15,7 @@ public class ApplicationUserData
     public ApplicationUser? User { get; set; }
     public ActivityLevel? ActivityLevel { get; set; }
     public FitnessGoal? FitnessGoal { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+
 }

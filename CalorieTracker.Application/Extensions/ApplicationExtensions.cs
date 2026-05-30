@@ -2,10 +2,12 @@ using CalorieTracker.Application.Contracts.Services.ActivityGoals;
 using CalorieTracker.Application.Contracts.Services.Products;
 using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
+using CalorieTracker.Application.Contracts.Services.User_Records;
 using CalorieTracker.Application.Options;
 using CalorieTracker.Application.Services.ActivityGoals;
 using CalorieTracker.Application.Services.Security;
 using CalorieTracker.Application.Services.User;
+using CalorieTracker.Application.Services.User_Records;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +25,7 @@ public static class ApplicationExtensions
         services.AddScoped<IFitnessGoalService, FitnessGoalService>();
         services.AddScoped<IApplicationUserDataService, ApplicationUserDataService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IRecordFoodIntake, RecordFoodIntake>();
 
         return services;
     }

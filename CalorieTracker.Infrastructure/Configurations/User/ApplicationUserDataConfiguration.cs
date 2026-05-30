@@ -35,5 +35,11 @@ internal class ApplicationUserDataConfiguration : IEntityTypeConfiguration<Appli
 
         builder.Property(x => x.Gender)
             .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+           .HasDefaultValue(DateTime.UtcNow);
+
+        builder.Property(x => x.UpdatedAt)
+           .HasDefaultValue(DateTime.UtcNow);
     }
 }

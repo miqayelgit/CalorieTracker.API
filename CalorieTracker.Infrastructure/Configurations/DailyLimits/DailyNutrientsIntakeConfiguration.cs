@@ -25,5 +25,11 @@ public class DailyNutrientsIntakeConfiguration : IEntityTypeConfiguration<DailyN
 
         builder.Property(x => x.Carbs)
             .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+            .HasDefaultValue(DateTime.UtcNow);
+
+        builder.Property(x => x.UpdatedAt)
+            .IsRequired(false);
     }
 }

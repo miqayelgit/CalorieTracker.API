@@ -26,8 +26,11 @@ internal class DailyCalorieLimitConfiguration : IEntityTypeConfiguration<DailyCa
         builder.Property(x => x.RemainingLimit)
             .IsRequired();
 
-        builder.Property(x => x.CreatedDate)
+        builder.Property(x => x.CreatedAt)
             .IsRequired()
-            .HasDefaultValue(new DateTime());
+            .HasDefaultValue(DateTime.UtcNow);
+
+        builder.Property(x => x.UpdatedAt)
+            .IsRequired(false);
     }
 }

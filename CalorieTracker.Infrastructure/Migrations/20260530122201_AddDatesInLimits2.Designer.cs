@@ -4,6 +4,7 @@ using CalorieTracker.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalorieTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260530122201_AddDatesInLimits2")]
+    partial class AddDatesInLimits2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,7 +87,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 29, 58, 542, DateTimeKind.Utc).AddTicks(2868));
+                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 22, 1, 697, DateTimeKind.Utc).AddTicks(8606));
 
                     b.Property<short>("DailyLimit")
                         .HasColumnType("smallint");
@@ -92,7 +95,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<short>("RemainingLimit")
                         .HasColumnType("smallint");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<short>("UsedLimit")
@@ -120,7 +123,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 29, 58, 542, DateTimeKind.Utc).AddTicks(5502));
+                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 22, 1, 698, DateTimeKind.Utc).AddTicks(1070));
 
                     b.Property<short>("Fat")
                         .HasColumnType("smallint");
@@ -128,7 +131,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<short>("Protein")
                         .HasColumnType("smallint");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
@@ -224,7 +227,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 29, 58, 543, DateTimeKind.Utc).AddTicks(9224));
+                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 22, 1, 699, DateTimeKind.Utc).AddTicks(4322));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -309,7 +312,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 29, 58, 543, DateTimeKind.Utc).AddTicks(7311));
+                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 22, 1, 699, DateTimeKind.Utc).AddTicks(2447));
 
                     b.Property<Guid>("FitnessGoalId")
                         .HasColumnType("uniqueidentifier");
@@ -324,7 +327,7 @@ namespace CalorieTracker.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 29, 58, 543, DateTimeKind.Utc).AddTicks(7654));
+                        .HasDefaultValue(new DateTime(2026, 5, 30, 12, 22, 1, 699, DateTimeKind.Utc).AddTicks(2792));
 
                     b.Property<short>("Weight")
                         .HasColumnType("smallint");

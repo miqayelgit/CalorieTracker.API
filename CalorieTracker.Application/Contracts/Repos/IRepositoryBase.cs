@@ -12,4 +12,6 @@ public interface IRepositoryBase<TEntity> where TEntity : class
     Task<List<TEntity>> GetFromWhereAsync(Expression<Func<TEntity, bool>>? expression = null);
     Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>>? expression = null);
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? expression = null);
+    //Task<TEntity?> GetTheLatestAddedItem(Expression<Func<TEntity, DateTime>> expression);
+
 }

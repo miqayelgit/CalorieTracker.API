@@ -34,6 +34,6 @@ public class FitnessGoalConfigutation : IEntityTypeConfiguration<FitnessGoal>
             .IsRequired();
 
         builder.HasAlternateKey(x => x.GoalName)
-    .HasName("UQ_FitnessGoals_GoalName");
+            .HasName("UQ_FitnessGoals_GoalName");
     }
 }

@@ -1,7 +1,4 @@
-﻿using CalorieTracker.API.Controllers;
-using CalorieTracker.Application.Exceptions.Base;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+﻿using CalorieTracker.Application.Exceptions.Base;
 
 namespace CalorieTracker.API.Middlewares;
 

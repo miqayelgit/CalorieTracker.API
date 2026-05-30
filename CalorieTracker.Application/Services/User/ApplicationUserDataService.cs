@@ -42,14 +42,15 @@ public class ApplicationUserDataService : IApplicationUserDataService
             Height = dto.Height,
             Weight = dto.Weight,
             Age = dto.Age,
-            Gender = dto.Gender
+            Gender = dto.Gender,
+            CreatedAt = DateTime.UtcNow
         };
 
         _unitOfWork.ApplicationUserDataRepository.Add(userData);
 
         var calculators = new UserDataCalculators(_unitOfWork, userId);
 
-        await calculators.CalculateUserDailyCalorieLimitsAsync(dto);
+        await calculators.CalculateUserDailyCalorieLimitsAsync(userData);
         await _unitOfWork.CommitAsync();
     }
 

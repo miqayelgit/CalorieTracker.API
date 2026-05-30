@@ -1,13 +1,8 @@
-using CalorieTracker.API.Helpers;
 using CalorieTracker.Application.Contracts.Services.User;
-using CalorieTracker.Application.Exceptions;
-using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Dtos.Users;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Extensions.Options;
 
 namespace CalorieTracker.API.Controllers;
 

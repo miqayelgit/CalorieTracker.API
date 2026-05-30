@@ -45,6 +45,7 @@ public class ProductService : IProductService
         return products
             .Select(product => new ProductDto
             {
+                Id = product.Id,
                 Name = product.ProductName,
                 ProteinPerHundredGram = product.ProteinPerHundredGram,
                 CarbsPerHundredGram = product.CarbsPerHundredGram,

@@ -9,5 +9,7 @@ public class DailyNutrientsIntakeAmount
     public short Protein { get; set; }
     public short Fat { get; set; }
     public short Carbs { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public ApplicationUser? User { get; set; } = null!;
 }
