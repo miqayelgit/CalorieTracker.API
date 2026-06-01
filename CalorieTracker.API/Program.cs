@@ -67,7 +67,7 @@ builder.Services
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddValidatorsFromAssemblyContaining<SignInDtoValidator>();
+builder.Services.AddValidatorsFromAssembly(typeof(SignInDtoValidator).Assembly);
 
 builder.Services.AddAuthentication(options =>
 {

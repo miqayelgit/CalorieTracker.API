@@ -16,7 +16,12 @@ public class UsersController : BaseController
     private readonly IValidator<UpdateUserDto> _updateUserDtoValidator;
     private readonly IValidator<ApplicationUserDataDto> _applicationUserDataDtoValidator;
 
-    public UsersController(IApplicationUserService applicationUserService, IApplicationUserDataService applicationUserDataService, IValidator<RegistrationDto> registrationDtoValidator, IValidator<UpdateUserDto> updateUserDtoValidator, IValidator<ApplicationUserDataDto> applicationUserDataDtoValidator)
+    public UsersController(
+        IApplicationUserService applicationUserService,
+        IApplicationUserDataService applicationUserDataService, 
+        IValidator<RegistrationDto> registrationDtoValidator, 
+        IValidator<UpdateUserDto> updateUserDtoValidator, 
+        IValidator<ApplicationUserDataDto> applicationUserDataDtoValidator)
     {
         _applicationUserService = applicationUserService;
         _applicationUserDataService = applicationUserDataService;
