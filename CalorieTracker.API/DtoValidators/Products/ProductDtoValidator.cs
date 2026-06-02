@@ -1,7 +1,7 @@
 ﻿using CalorieTracker.Dtos.Products;
 using FluentValidation;
 
-namespace CalorieTracker.Dtos.DtoValidators.Products;
+namespace CalorieTracker.API.DtoValidators.Products;
 
 public class ProductDtoValidator : AbstractValidator<ProductDto>
 {

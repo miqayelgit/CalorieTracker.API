@@ -1,10 +1,8 @@
 ﻿using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Dtos.Auth;
-using CalorieTracker.Dtos.DtoValidators.Auth;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.API.Controllers;
@@ -37,7 +35,7 @@ public class AuthController : BaseController
     [Route("sign-in")]
     public async Task<IActionResult> SignIn([FromBody]SignInDto dto)
     {
-        await _signInDtovalidator.ValidateAndThrowAsync(dto);
+        //await _signInDtovalidator.ValidateAndThrowAsync(dto);
 
         var user = await _authenticationService.SignInUser(dto);
         return Ok(user);

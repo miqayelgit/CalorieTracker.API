@@ -1,11 +1,14 @@
 ﻿using CalorieTracker.Dtos.Auth;
 using FluentValidation;
 
-namespace CalorieTracker.Dtos.DtoValidators.Auth;
+namespace CalorieTracker.API.DtoValidators.Auth;
 public class SignInDtoValidator : AbstractValidator<SignInDto>
 {
     public SignInDtoValidator()
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(x => x.UserName)
             .NotEmpty()
             .NotNull()

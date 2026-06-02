@@ -1,7 +1,7 @@
 ﻿using CalorieTracker.Dtos.Users;
 using FluentValidation;
 
-namespace CalorieTracker.Dtos.DtoValidators.Users
+namespace CalorieTracker.API.DtoValidators.Users
 {
     public class RegistrationDtoValidator : AbstractValidator<RegistrationDto>
     {

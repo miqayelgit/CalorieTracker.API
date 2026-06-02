@@ -1,14 +1,16 @@
+using CalorieTracker.API.DtoValidators.Auth;
 using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.Seed;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
 using CalorieTracker.Domain.Entities.User;
-using CalorieTracker.Dtos.DtoValidators.Auth;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -67,6 +69,28 @@ builder.Services
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value!.Errors.Count > 0)
+            .Select(x => new
+            {
+                Field = x.Key,
+                Errors = x.Value!.Errors.Select(e => e.ErrorMessage)
+            });
+
+        return new BadRequestObjectResult(new
+        {
+            Success = false,
+            Message = "Validation failed",
+            Name = "Poghos",
+            Errors = errors
+        });
+    };
+});
 builder.Services.AddValidatorsFromAssembly(typeof(SignInDtoValidator).Assembly);
 
 builder.Services.AddAuthentication(options =>
@@ -104,6 +128,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddHostedService<Worker>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

@@ -3,7 +3,9 @@ using CalorieTracker.Application.Contracts.Repos.UOW;
 using CalorieTracker.Application.Exceptions.Common;
 using CalorieTracker.Domain.Entities.DailyLimits;
 using CalorieTracker.Domain.Entities.User;
+using CalorieTracker.Dtos.UserDataCalculation;
 using CalorieTracker.Dtos.Users;
+using System.Net.Http.Json;
 
 namespace CalorieTracker.Application.Services.Calculations;
 
@@ -11,6 +13,7 @@ public class UserDataCalculators
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly Guid _userId;
+    private static readonly HttpClient _client = new();
     public UserDataCalculators(IUnitOfWork unitOfWork, Guid userId)
     {
         _unitOfWork = unitOfWork;
@@ -22,19 +25,28 @@ public class UserDataCalculators
 
         var fitnessGoal = await _unitOfWork.FitnessGoalRepository.FirstOrDefaultAsync(x => x.Id == userData.FitnessGoalId);
 
-        var decisive = userData.Gender == "Male" ? 5 : -161;
+        var requestBody = new CalculateUserDataDto
+        {
+            ActivityLevelRate = activityLevel!.ActivityLevelRate,
+            AdditionalCalories = fitnessGoal!.AdditionalCalories,
+            Age = userData.Age,
+            Gender = userData.Gender,
+            Height = userData.Height,
+            Weight = userData.Weight,
+            ProteinPercent = fitnessGoal.ProteinPercent,
+            CarbsPercent = fitnessGoal.CarbsPercent,
+            FatPercent = fitnessGoal.FatPercent
+        };
 
-        var BMR = 10 * userData.Weight + 6.25 * userData.Height - 5 * userData.Age + decisive + fitnessGoal!.AdditionalCalories;
+        var response = await _client.PostAsJsonAsync("https://localhost:7223/CalculateUserData", requestBody);
 
-        var   dailyCalorieLimit = (short) (BMR * activityLevel!.ActivityLevelRate);
-        short dailyProteinAmount = (short)(dailyCalorieLimit * fitnessGoal.ProteinPercent / 100 / 4);
-        short dailyFatAmount = (short)(dailyCalorieLimit * fitnessGoal.FatPercent / 100 / 9);
-        short dailyCarbsAmount = (short)(dailyCalorieLimit * fitnessGoal.CarbsPercent / 100 / 4);
+        var calculationResults = await response.Content.ReadFromJsonAsync<CalculationResultsDto>();
 
+        
         var dailyLimitOfCalories = new DailyCalorieLimit
         {
             UserId = _userId,
-            DailyLimit = dailyCalorieLimit,
+            DailyLimit = calculationResults.DailyCalorieLimit,
             UsedLimit = 0,
             RemainingLimit = 0,
             CreatedAt = DateTime.UtcNow
@@ -43,9 +55,9 @@ public class UserDataCalculators
         var dailyNutrientsIntake = new DailyNutrientsIntakeAmount
         {
             UserId = _userId,
-            Protein = dailyProteinAmount,
-            Carbs = dailyCarbsAmount,
-            Fat = dailyFatAmount,
+            Protein = calculationResults.DailyProteinAmount,
+            Carbs = calculationResults.DailyCarbsAmount,
+            Fat = calculationResults.DailyFatAmount,
             CreatedAt = DateTime.UtcNow
         };
 

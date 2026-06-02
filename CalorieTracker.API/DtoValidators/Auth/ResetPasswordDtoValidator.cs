@@ -1,6 +1,6 @@
 ﻿using CalorieTracker.Dtos.Auth;
 using FluentValidation;
-namespace CalorieTracker.Dtos.DtoValidators.Auth;
+namespace CalorieTracker.API.DtoValidators.Auth;
 
 public class ResetPasswordDtoValidator : AbstractValidator<ResetPasswordDto>
 {
