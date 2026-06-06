@@ -23,13 +23,13 @@ namespace Worker_Service
                 {
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 }
+
                 var userDatas = await _unitOfWork.ApplicationUserDataRepository.GetFromWhereAsync();
+                var calculators = new UserDataCalculators(_unitOfWork);
 
                 foreach(var userData in userDatas)
                 {
-                    var calculators = new UserDataCalculators(_unitOfWork, userData.Id);
                     await calculators.CalculateUserDailyCalorieLimitsAsync(userData);
-                    await _unitOfWork.CommitAsync();
                 }
                 await Task.Delay(1000, stoppingToken);
             }

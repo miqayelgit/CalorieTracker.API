@@ -1,4 +1,5 @@
 using CalorieTracker.Application.Contracts.Repos.UOW;
+using CalorieTracker.Application.Contracts.Services.Calculators;
 using CalorieTracker.Application.Services.Calculations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,16 +30,15 @@ namespace Worker_Service
                 using var scope = _scopeFactory.CreateScope();
 
                 var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+                var userDataCalculators = scope.ServiceProvider.GetRequiredService<IUserDataCalculators>();
 
                 var userDatas = await unitOfWork.ApplicationUserDataRepository.GetFromWhereAsync();
 
                 foreach (var userData in userDatas)
                 {
-
-                    var calculators = new UserDataCalculators(unitOfWork, userData.Id);
-                    await calculators.CalculateUserDailyCalorieLimitsAsync(userData);
-                    await unitOfWork.CommitAsync();
+                    await userDataCalculators.CalculateUserDailyCalorieLimitsAsync(userData);
                 }
+
                 await Task.Delay(80000000, stoppingToken);
             }
         }

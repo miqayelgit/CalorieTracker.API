@@ -1,10 +1,13 @@
 using CalorieTracker.Application.Contracts.Services.ActivityGoals;
+using CalorieTracker.Application.Contracts.Services.Calculators;
 using CalorieTracker.Application.Contracts.Services.Products;
 using CalorieTracker.Application.Contracts.Services.Security;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Contracts.Services.User_Records;
+using CalorieTracker.Application.HttpClientService;
 using CalorieTracker.Application.Options;
 using CalorieTracker.Application.Services.ActivityGoals;
+using CalorieTracker.Application.Services.Calculations;
 using CalorieTracker.Application.Services.Security;
 using CalorieTracker.Application.Services.User;
 using CalorieTracker.Application.Services.User_Records;
@@ -26,7 +29,8 @@ public static class ApplicationExtensions
         services.AddScoped<IApplicationUserDataService, ApplicationUserDataService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IRecordFoodIntake, RecordFoodIntake>();
-
+        services.AddScoped<IUserDataCalculators, UserDataCalculators>();
+        services.AddHttpClient<ApiClient>();
         return services;
     }
 

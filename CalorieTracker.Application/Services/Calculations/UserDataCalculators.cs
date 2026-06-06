@@ -1,23 +1,29 @@
-﻿
-using CalorieTracker.Application.Contracts.Repos.UOW;
+﻿using CalorieTracker.Application.Contracts.Repos.UOW;
+using CalorieTracker.Application.Contracts.Services.Calculators;
 using CalorieTracker.Application.Exceptions.Common;
+using CalorieTracker.Application.HttpClientService;
+using CalorieTracker.Application.Options.ApiClient;
 using CalorieTracker.Domain.Entities.DailyLimits;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Dtos.UserDataCalculation;
 using CalorieTracker.Dtos.Users;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace CalorieTracker.Application.Services.Calculations;
 
-public class UserDataCalculators
+public class UserDataCalculators : IUserDataCalculators
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly Guid _userId;
-    private static readonly HttpClient _client = new();
-    public UserDataCalculators(IUnitOfWork unitOfWork, Guid userId)
+    private readonly ApiClient _apiClient;
+    private readonly UserDatCalculatorServiceOptions _userDatCalculatorServiceOptions;
+
+    public UserDataCalculators(IUnitOfWork unitOfWork, ApiClient apiClient, IOptions<UserDatCalculatorServiceOptions> userDatCalculatorServiceOptions)
     {
         _unitOfWork = unitOfWork;
-        _userId = userId;
+        _apiClient = apiClient;
+        _userDatCalculatorServiceOptions = userDatCalculatorServiceOptions.Value;
     }
     public async Task CalculateUserDailyCalorieLimitsAsync(ApplicationUserData userData)
     {
@@ -38,15 +44,18 @@ public class UserDataCalculators
             FatPercent = fitnessGoal.FatPercent
         };
 
-        var response = await _client.PostAsJsonAsync("https://localhost:7223/CalculateUserData", requestBody);
+
+        var uri = $"{_userDatCalculatorServiceOptions.BaseUri}{_userDatCalculatorServiceOptions.Path}";
+
+        var response = await _apiClient.Post(JsonSerializer.Serialize(requestBody), uri);
 
         var calculationResults = await response.Content.ReadFromJsonAsync<CalculationResultsDto>();
 
         
         var dailyLimitOfCalories = new DailyCalorieLimit
         {
-            UserId = _userId,
-            DailyLimit = calculationResults.DailyCalorieLimit,
+            UserId = userData.Id,
+            DailyLimit = calculationResults!.DailyCalorieLimit,
             UsedLimit = 0,
             RemainingLimit = 0,
             CreatedAt = DateTime.UtcNow
@@ -54,22 +63,25 @@ public class UserDataCalculators
 
         var dailyNutrientsIntake = new DailyNutrientsIntakeAmount
         {
-            UserId = _userId,
+            UserId = userData.Id,
             Protein = calculationResults.DailyProteinAmount,
             Carbs = calculationResults.DailyCarbsAmount,
             Fat = calculationResults.DailyFatAmount,
             CreatedAt = DateTime.UtcNow
         };
 
+
         _unitOfWork.DailyCalorieLimitRepository.Add(dailyLimitOfCalories);
         _unitOfWork.DailyNutrientsIntakeAmountRepository.Add(dailyNutrientsIntake);
+
+        await _unitOfWork.CommitAsync();
     }
 
-    public async Task CalculateFoodIntake(UserIntakeRecordDto dto)
+    public async Task CalculateFoodIntake(UserIntakeRecordDto dto, Guid userId)
     {
         var product = await _unitOfWork.ProductRepository.FirstOrDefaultAsync(x => x.Id == dto.ProductId);
-        var calorieLimits = await _unitOfWork.DailyCalorieLimitRepository.FirstOrDefaultAsync(x => x.UserId == _userId);
-        var nutrientsLimits = await _unitOfWork.DailyNutrientsIntakeAmountRepository.FirstOrDefaultAsync(x => x.UserId == _userId);
+        var calorieLimits = await _unitOfWork.DailyCalorieLimitRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+        var nutrientsLimits = await _unitOfWork.DailyNutrientsIntakeAmountRepository.FirstOrDefaultAsync(x => x.UserId == userId);
 
         if (product == null || calorieLimits == null || nutrientsLimits == null)
         {
@@ -78,15 +90,15 @@ public class UserDataCalculators
 
         float foodUnit = dto.FoodAmountInGrams / 100;
 
-        nutrientsLimits.Protein = (short) (nutrientsLimits.Protein - foodUnit * product.ProteinPerHundredGram);
+        nutrientsLimits.Protein = (short)(nutrientsLimits.Protein - foodUnit * product.ProteinPerHundredGram);
         nutrientsLimits.Fat = (short)(nutrientsLimits.Fat - foodUnit * product.FatPerHundredGram);
-        nutrientsLimits.Carbs = (short) (nutrientsLimits.Carbs - foodUnit * product.CarbsPerHundredGram);
+        nutrientsLimits.Carbs = (short)(nutrientsLimits.Carbs - foodUnit * product.CarbsPerHundredGram);
         nutrientsLimits.UpdatedAt = DateTime.UtcNow;
-        
+
 
         var usedLimit = (short)(foodUnit * product.CaloriesPerHundredGram + calorieLimits.UsedLimit);
         calorieLimits.UsedLimit = usedLimit;
-        calorieLimits.RemainingLimit= (short)(calorieLimits.DailyLimit - usedLimit);
+        calorieLimits.RemainingLimit = (short)(calorieLimits.DailyLimit - usedLimit);
         calorieLimits.UpdatedAt = DateTime.UtcNow;
 
         _unitOfWork.DailyNutrientsIntakeAmountRepository.Update(nutrientsLimits);

@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Application.Contracts.Repos.UOW;
+using CalorieTracker.Application.Contracts.Services.Calculators;
 using CalorieTracker.Application.Contracts.Services.User;
 using CalorieTracker.Application.Exceptions.Common;
 using CalorieTracker.Application.Exceptions.Users;
@@ -13,11 +14,13 @@ public class ApplicationUserDataService : IApplicationUserDataService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserDataCalculators _userCalculators;
 
-    public ApplicationUserDataService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+    public ApplicationUserDataService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IUserDataCalculators userCalculators)
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
+        _userCalculators = userCalculators;
     }
 
     public async Task FillUserData(Guid userId, ApplicationUserDataDto dto)
@@ -48,10 +51,7 @@ public class ApplicationUserDataService : IApplicationUserDataService
 
         _unitOfWork.ApplicationUserDataRepository.Add(userData);
 
-        var calculators = new UserDataCalculators(_unitOfWork, userId);
-
-        await calculators.CalculateUserDailyCalorieLimitsAsync(userData);
-        await _unitOfWork.CommitAsync();
+        await _userCalculators.CalculateUserDailyCalorieLimitsAsync(userData);
     }
 
     public async Task<UserFullDataDto> GetUserFullData(Guid userId)

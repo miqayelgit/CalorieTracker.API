@@ -3,6 +3,7 @@ using CalorieTracker.API.Middlewares;
 using CalorieTracker.Application.Contracts.Services.Seed;
 using CalorieTracker.Application.Extensions;
 using CalorieTracker.Application.Options;
+using CalorieTracker.Application.Options.ApiClient;
 using CalorieTracker.Domain.Entities.User;
 using CalorieTracker.Infrastructure.Context;
 using CalorieTracker.Infrastructure.Extensions;
@@ -59,6 +60,8 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+builder.Services.Configure<UserDatCalculatorServiceOptions>(builder.Configuration.GetSection("UserDatCalculatorServiceOptions"));
+builder.Services.Configure<HttpClientOptions>(builder.Configuration.GetSection("HttpClientOptions"));
 
 
 builder.Services
