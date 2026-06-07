@@ -27,6 +27,10 @@ namespace Worker_Service
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 }
 
+                var delay = DateTime.Today.AddDays(1) - DateTime.Now;
+
+                await Task.Delay(delay, stoppingToken);
+
                 using var scope = _scopeFactory.CreateScope();
 
                 var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
@@ -38,9 +42,45 @@ namespace Worker_Service
                 {
                     await userDataCalculators.CalculateUserDailyCalorieLimitsAsync(userData);
                 }
-
-                await Task.Delay(80000000, stoppingToken);
             }
         }
+
+        //THis is my implementation ->
+
+        /*     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+             {
+                 int milisecondsInDay = 86400000;
+                 var workerTriggerTimeRemaining = DateTime.Today.AddDays(1) - DateTime.Now;
+                 var milisecondsUntilMidnight = Math.Floor(workerTriggerTimeRemaining.TotalMilliseconds);
+
+                 while (!stoppingToken.IsCancellationRequested)
+                 {
+                     if (_logger.IsEnabled(LogLevel.Information))
+                     {
+                         _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                     }
+
+                     if (milisecondsUntilMidnight == 0)
+                     {
+                         using var scope = _scopeFactory.CreateScope();
+
+                         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+                         var userDataCalculators = scope.ServiceProvider.GetRequiredService<IUserDataCalculators>();
+
+                         var userDatas = await unitOfWork.ApplicationUserDataRepository.GetFromWhereAsync();
+
+                         foreach (var userData in userDatas)
+                         {
+                             await userDataCalculators.CalculateUserDailyCalorieLimitsAsync(userData);
+                         }
+
+                         milisecondsUntilMidnight = milisecondsInDay;
+                     }
+
+
+                     await Task.Delay(TimeSpan.FromMilliseconds(milisecondsUntilMidnight), stoppingToken);
+                     milisecondsUntilMidnight = 0;
+                 }
+             }*/
     }
 }
