@@ -1,4 +1,7 @@
 ﻿
+
+using CalorieTracker.Dtos.Enums;
+
 namespace CalorieTracker.Dtos.UserDataCalculation;
 
 public class CalculateUserDataDto
@@ -6,7 +9,7 @@ public class CalculateUserDataDto
     public short Height { get; set; }
     public short Weight { get; set; }
     public byte Age { get; set; }
-    public string Gender { get; set; } = null!;
+    public Gender Gender { get; set; }
     public byte ProteinPercent { get; set; }
     public byte FatPercent { get; set; }
     public byte CarbsPercent { get; set; }

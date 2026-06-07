@@ -12,16 +12,10 @@ namespace CalorieTracker.API.Controllers;
 public class AuthController : BaseController
 {
     private readonly IAuthenticationService _authenticationService;
-    private readonly IValidator<SignInDto> _signInDtovalidator;
-    private readonly IValidator<ForgotPasswordDto> _forgotPasswordDtoValidator;
-    private readonly IValidator<ResetPasswordDto> _resetPasswordDtoValidator;
 
-    public AuthController(IAuthenticationService authenticationService, IValidator<SignInDto> validator, IValidator<ForgotPasswordDto> forgotPasswordDtoValidator, IValidator<ResetPasswordDto> resetPasswordDtoValidator)
+    public AuthController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
-        _signInDtovalidator = validator;
-        _forgotPasswordDtoValidator = forgotPasswordDtoValidator;
-        _resetPasswordDtoValidator = resetPasswordDtoValidator;
     }
 
     [Authorize]
@@ -35,8 +29,6 @@ public class AuthController : BaseController
     [Route("sign-in")]
     public async Task<IActionResult> SignIn([FromBody]SignInDto dto)
     {
-        //await _signInDtovalidator.ValidateAndThrowAsync(dto);
-
         var user = await _authenticationService.SignInUser(dto);
         return Ok(user);
     }
@@ -45,8 +37,6 @@ public class AuthController : BaseController
     [Route("forgot-password")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
     {
-       await _forgotPasswordDtoValidator.ValidateAndThrowAsync(dto);
-
        string token = await _authenticationService.ForgotPassword(dto);
        return Ok(token);
 
@@ -56,8 +46,6 @@ public class AuthController : BaseController
     [Route("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
     {
-       await _resetPasswordDtoValidator.ValidateAndThrowAsync(dto);
-
        await _authenticationService.ResetPassword(dto);
        return Ok();
     }

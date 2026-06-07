@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CalorieTracker.Dtos.UserDataCalculation;
+using Microsoft.AspNetCore.Identity;
 
 namespace CalorieTracker.Domain.Entities.User;
 

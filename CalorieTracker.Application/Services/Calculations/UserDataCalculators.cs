@@ -5,6 +5,7 @@ using CalorieTracker.Application.HttpClientService;
 using CalorieTracker.Application.Options.ApiClient;
 using CalorieTracker.Domain.Entities.DailyLimits;
 using CalorieTracker.Domain.Entities.User;
+using CalorieTracker.Dtos.Enums;
 using CalorieTracker.Dtos.UserDataCalculation;
 using CalorieTracker.Dtos.Users;
 using Microsoft.Extensions.Options;
@@ -31,12 +32,14 @@ public class UserDataCalculators : IUserDataCalculators
 
         var fitnessGoal = await _unitOfWork.FitnessGoalRepository.FirstOrDefaultAsync(x => x.Id == userData.FitnessGoalId);
 
+        Enum.TryParse<Gender>(userData.Gender, ignoreCase: true, out var gender);
+
         var requestBody = new CalculateUserDataDto
         {
             ActivityLevelRate = activityLevel!.ActivityLevelRate,
             AdditionalCalories = fitnessGoal!.AdditionalCalories,
             Age = userData.Age,
-            Gender = userData.Gender,
+            Gender = gender,
             Height = userData.Height,
             Weight = userData.Weight,
             ProteinPercent = fitnessGoal.ProteinPercent,
@@ -47,11 +50,13 @@ public class UserDataCalculators : IUserDataCalculators
 
         var uri = $"{_userDatCalculatorServiceOptions.BaseUri}{_userDatCalculatorServiceOptions.Path}";
 
+        _apiClient.RequestMessage.Headers.Add("x-api-key", _userDatCalculatorServiceOptions.ApiKey);
+        
         var response = await _apiClient.Post(JsonSerializer.Serialize(requestBody), uri);
 
         var calculationResults = await response.Content.ReadFromJsonAsync<CalculationResultsDto>();
 
-        
+
         var dailyLimitOfCalories = new DailyCalorieLimit
         {
             UserId = userData.Id,

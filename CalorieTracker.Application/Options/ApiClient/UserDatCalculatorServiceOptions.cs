@@ -4,4 +4,5 @@ public class UserDatCalculatorServiceOptions
 {
     public string BaseUri { get; set; } = null!; 
     public string Path { get; set; } = null!;
+    public string ApiKey { get; set; } = null!;
 }

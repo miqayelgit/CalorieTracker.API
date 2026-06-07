@@ -11,6 +11,7 @@ public class ApiClient : IApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly HttpClientOptions _httpClientOptions;
+    public HttpRequestMessage RequestMessage { get; set; } = new HttpRequestMessage();
     public ApiClient(HttpClient httpClient, IOptions<HttpClientOptions> httpClientOptions)
     {
         _httpClient = httpClient;
@@ -19,15 +20,14 @@ public class ApiClient : IApiClient
 
     public async Task<HttpResponseMessage> Post(string requestModel, string uri)
     {
-        var requestMessage = new HttpRequestMessage
-        {
-            RequestUri = new Uri(uri),
-            Method = HttpMethod.Post,
-            Content = new StringContent(requestModel, null, _httpClientOptions.Accept)
-        };
+        RequestMessage.RequestUri = new Uri(uri);
+        RequestMessage.Method = HttpMethod.Post;
+        RequestMessage.Content = new StringContent(requestModel, null, _httpClientOptions.Accept);
 
+        var body = await RequestMessage.Content.ReadAsStringAsync();
+        Console.WriteLine(body);
 
-        return await _httpClient.SendAsync(requestMessage);
+        return await _httpClient.SendAsync(RequestMessage);
     }
 
     public async Task<HttpResponseMessage> Get(string uri)
