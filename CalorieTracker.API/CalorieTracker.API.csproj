@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CalorieTracker.Application\CalorieTracker.Application.csproj" />
     <ProjectReference Include="..\CalorieTracker.Infrastructure\CalorieTracker.Infrastructure.csproj" />
+    <ProjectReference Include="..\Worker Service\Worker Service.csproj" />
   </ItemGroup>
 
 </Project>
