@@ -12,19 +12,15 @@ namespace CalorieTracker.API.Controllers;
 public class ProductController : BaseController
 {
     private readonly IProductService _productService;
-    private readonly IValidator<ProductDto> _productDtoValidator;
 
-    public ProductController(IProductService productService, IValidator<ProductDto> productDtoValidator)
+    public ProductController(IProductService productService)
     {
         _productService = productService;
-        _productDtoValidator = productDtoValidator;
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] ProductDto dto)
     {
-        await _productDtoValidator.ValidateAndThrowAsync(dto);
-
         await _productService.AddProductAsync(UserId, dto);
         return Ok();
     }
