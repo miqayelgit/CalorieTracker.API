@@ -18,7 +18,6 @@ public class RecordFoodIntakeController : BaseController
     }
 
     [HttpPost]
-    [AllowAnonymous]
     public async Task<IActionResult> Record([FromBody] UserIntakeRecordDto dto)
     {
         await _recordFoodIntake.Record(UserId, dto);
